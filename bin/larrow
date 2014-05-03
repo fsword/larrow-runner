@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+require 'larrow/runner'
+
+Larrow::Runner::Command.start

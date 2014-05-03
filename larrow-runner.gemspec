@@ -6,11 +6,11 @@ require 'larrow/runner/version'
 Gem::Specification.new do |spec|
   spec.name          = "larrow-runner"
   spec.version       = Larrow::Runner::VERSION
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
-  spec.homepage      = ""
   spec.authors       = ["fsword"]
   spec.email         = ["li.jianye@gmail.com"]
+  spec.summary       = %q{Core application of larrow}
+  spec.description   = %q{Automatically build your app from code}
+  spec.homepage      = "http://github.com/fsword/larrow-core"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files -z`.split("\x0")
@@ -19,5 +19,5 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency "rake"
+  spec.add_development_dependency 'rake', '~> 0'
 end

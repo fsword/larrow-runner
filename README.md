@@ -1,12 +1,12 @@
-# Larrow::Runner
+# Larrow::Core
 
-TODO: Write a gem description
+Core application of larrow
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'larrow-runner'
+    gem 'larrow-core'
 
 And then execute:
 
@@ -18,12 +18,12 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+larrow <source\_url>
 
 ## Contributing
 
-1. Fork it ( https://github.com/[my-github-username]/larrow-runner/fork )
+1. Fork it ( http://github.com/<my-github-username>/larrow-core/fork )
 2. Create your feature branch (`git checkout -b my-new-feature`)
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
-5. Create a new Pull Request
+5. Create new Pull Request

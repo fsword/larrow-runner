@@ -2,6 +2,8 @@ require "larrow/runner/version"
 
 module Larrow
   module Runner
-    # Your code goes here...
+    autoload :Command, 'larrow/runner/command'
+    autoload :Config,  'larrow/runner/config'
+    autoload :World,   'larrow/runner/world'
   end
 end
