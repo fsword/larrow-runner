@@ -1,5 +1,5 @@
 module Larrow
-  module Core
+  module Runner
     module Config
       def self.generate_config filepath
         puts "The larrow config will be generated at #{filepath}."

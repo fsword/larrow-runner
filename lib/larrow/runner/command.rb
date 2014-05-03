@@ -1,6 +1,6 @@
 require 'thor'
 module Larrow
-  module Core
+  module Runner
     class Command < ::Thor
       desc 'config','show all configuration'
       def config
@@ -9,9 +9,12 @@ module Larrow
         puts File.read(filepath)
       end
 
-      desc 'go','execute your app'
+      desc 'go <target_url>','execute your app'
+      long_desc <<-EOF
+larrow will build a whole world for your application
+EOF
       def go url
-        World.go url
+        World.new(url).go
       end
     end
   end

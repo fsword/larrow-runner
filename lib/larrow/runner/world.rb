@@ -1,10 +1,16 @@
 module Larrow
-  module Core
+  module Runner
     class World
-      def self.execute url
+
+      attr_accessor :target_url, :scm
+      def initialize target_url
+        self.target_url = target_url
+      end
+
+      def go
         # TODO
-        world = parse url
-        World.resources.map(&:assign)
+        scm =  Scm.parse url
+        # World.resources.map(&:assign)
         puts 'assign resource for this execution'
         puts 'check out the source code url'
         puts 'do script according .larrow'
