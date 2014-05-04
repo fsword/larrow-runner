@@ -18,11 +18,7 @@ module Larrow
           end
         end
 
-        def https_url
-          'https://github.com/%s/%s.git' % [organize, name]
-        end
-
-        def git_url
+        def checkout_url
           'git@github.com:%s/%s.git' % [organize, name]
         end
       end

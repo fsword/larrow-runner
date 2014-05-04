@@ -3,21 +3,24 @@ module Larrow
     class World
 
       attr_accessor :target_url, :scm
+      attr_accessor :node
       def initialize target_url
         self.target_url = target_url
       end
 
       def go
         # TODO
-        scm =  Scm.parse url
-        # World.resources.map(&:assign)
-        puts 'assign resource for this execution'
-        puts 'check out the source code url'
+        self.scm =  Scm.parse target_url
+        self.node = scm.gen_node
+        node.assign
+        node.checkout
+        node.prepare
+        node.default_action
+        
         puts 'do script according .larrow'
         puts 'destroy every resource if it is ok'
       end
 
-      def parse url
         new.tap{|w| w.instances = Instance.new url}
       end
     end
