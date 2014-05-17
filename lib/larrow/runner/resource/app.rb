@@ -1,15 +1,21 @@
 module Larrow
   module Runner
-    class Node
-      attr_accessor :source_url
+    class App
+      attr_accessor :source_url, :scm
       attr_accessor :host, :port, :user, :passwd
-      def initialize source_url
+      def initialize source_url, scm
         self.source_url = source_url
+        self.scm = scm
       end
       
-      def assign
-        params = Cloud::Qingcloud.gen 1
-        params.each_pair do |k,v|
+      # It will include dependent apps
+      # This method should be recursive
+      def all_apps
+        [self] 
+      end
+
+      def assign arg
+        arg.each_pair do |k,v|
           self.send "#{k}=".to_sym, v
         end
       end

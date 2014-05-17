@@ -5,7 +5,7 @@ module Larrow
       desc 'config','show all configuration'
       def config
         filepath = "#{ENV['HOME']}/.larrow"
-        Config.generate_config filepath unless File.exist? filepath
+        Config.generate filepath unless File.exist? filepath
         puts File.read(filepath)
       end
 

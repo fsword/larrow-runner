@@ -18,9 +18,10 @@ module Larrow
           end
         end
 
-        def checkout_url
+        def formatted_url
           'git@github.com:%s/%s.git' % [organize, name]
         end
+
       end
     end
   end

@@ -1,13 +1,18 @@
+require 'yaml'
 module Larrow
   module Runner
     module Config
-      def self.generate_config filepath
-        puts "The larrow config will be generated at #{filepath}."
-        content = <<-CONTENT
-qy_access_key_id: 
-qy_secret_access_key: 
-        CONTENT
-        File.open(filepath, 'w+'){|f| f.write content}
+      FILE = "#{ENV['HOME']}/.larrow"
+      def self.generate
+        puts "The larrow config will be generated at #{FILE}."
+        content={
+          vm: { access_id: nil,secret_key: nil }
+        }
+        File.open(FILE, 'w+'){|f| f.write YAML.dump(content)}
+      end
+
+      def self.all
+        @config ||= YAML.load_file(FILE).with_indifferent_access
       end
     end
   end

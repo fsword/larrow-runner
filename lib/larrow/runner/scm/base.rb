@@ -3,7 +3,12 @@ module Larrow
     module Scm
       class Base
         def gen_node
-          Node.new checkout_url
+          # assign one node for project by default
+          App.new formatted_url, self
+        end
+
+        def formatted_url
+          raise 'not implement yet'
         end
       end
     end
