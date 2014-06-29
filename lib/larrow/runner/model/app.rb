@@ -2,17 +2,10 @@ module Larrow
   module Runner
     module Model
       class App
-        attr_accessor :source_url, :scm
-        attr_accessor :host, :port, :user, :passwd
+        attr_accessor :source_url, :scm, :node
         def initialize source_url, scm
           self.source_url = source_url
           self.scm = scm
-        end
-
-        # It will include dependent apps
-        # This method should be recursive
-        def all_apps
-          [self] 
         end
 
         def assign arg

@@ -8,6 +8,12 @@ module Larrow
           Github.new url
         end
       end
+
+      def larrow_spec
+      end
+
+      def gen
+      end
     end
   end
 end
