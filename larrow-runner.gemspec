@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'listen', '~> 0'
   spec.add_runtime_dependency 'thor', '~> 0'     
   spec.add_runtime_dependency 'octokit', '~> 0'     
+  spec.add_runtime_dependency 'larrow-qingcloud', '~> 0'     
 end

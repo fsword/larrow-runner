@@ -1,6 +1,6 @@
 module Larrow
   module Runner
-    class World
+    class Manager
 
       attr_accessor :target_url, :scm
       attr_accessor :root

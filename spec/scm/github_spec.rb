@@ -8,7 +8,7 @@ module Larrow
           https_url = 'https://github.com/org1/proj_name1.git'
           [git_url, https_url].each do |url|
             github = Github.new url
-            github.checkout_url.should   == git_url
+            github.formatted_url.should   == git_url
           end
         end
       end
