@@ -1,6 +1,5 @@
 require 'larrow/qingcloud'
 require 'larrow/runner/config'
-require 'larrow/runner/model/node'
 
 module Larrow
   module Runner
@@ -21,15 +20,7 @@ module Larrow
           
           (0...count).map do |i|
             instances[i].associate eips[i]
-            Model::Node.new instances[i], eips[i]
-          end
-        end
-
-        def destroy *nodes
-          nodes.map do |node|
-            node.instance.dissociate node.eip
-            node.instance.destroy
-            node.eip.destroy
+            [instances[i], eips[i]]
           end
         end
       end

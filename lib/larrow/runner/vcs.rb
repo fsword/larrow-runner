@@ -3,16 +3,10 @@ module Larrow
     module Vcs
       autoload :Base, 'larrow/runner/vcs/base'
       autoload :Github, 'larrow/runner/vcs/github'
-      def self.parse url
+      def self.formatted url
         if url =~ /github/
-          Github.new url
+          Github.new(url).formatted_url
         end
-      end
-
-      def larrow_spec
-      end
-
-      def gen
       end
     end
   end

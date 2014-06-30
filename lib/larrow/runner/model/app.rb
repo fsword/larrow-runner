@@ -2,10 +2,9 @@ module Larrow
   module Runner
     module Model
       class App
-        attr_accessor :source_url, :scm, :node
-        def initialize source_url, scm
+        attr_accessor :source_url, :node
+        def initialize source_url
           self.source_url = source_url
-          self.scm = scm
         end
 
         def assign arg
@@ -14,13 +13,10 @@ module Larrow
           end
         end
 
-        def checkout
-        end
-
         def prepare
         end
 
-        def default_action
+        def action
         end
 
       end

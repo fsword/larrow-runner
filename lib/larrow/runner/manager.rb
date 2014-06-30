@@ -1,31 +1,35 @@
+require 'larrow/runner/model/app'
+require 'larrow/runner/model/node'
+
 module Larrow
   module Runner
     class Manager
       include Service
 
-      attr_accessor :target_url, :scm
+      attr_accessor :target_url
       attr_accessor :app
       def initialize target_url
-        self.target_url = target_url
+        self.target_url = Vcs.formatted target_url
       end
 
       def go
-        # TODO
-        vcs =  Vcs.parse target_url
-        self.app = vcs.gen
-        allocate_resource app
+        self.app = Model::App.new target_url
+        allocate app
         app.prepare
-        app.default_action
+        app.action
         puts 'do script according .larrow'
-        release_resource app
+        release app
       end
 
-      def allocate_resource app
-        app.assign node: vm.create.first
+      def allocate app
+        app.assign node: Model::Node.new(*vm.create.first)
       end
 
-      def release_resource app
-        vm.destroy *app.node
+      def release app
+        app.node.tap do |node|
+          node.instance.destroy
+          node.eip.destroy
+        end
       end
     end
   end
