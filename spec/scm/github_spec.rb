@@ -1,7 +1,7 @@
 require 'spec_helper.rb'
 module Larrow
   module Runner
-    module Scm
+    module Vcs
       describe Github do
         it 'split_org_and_name' do
           git_url = 'git@github.com:org1/proj_name1.git'

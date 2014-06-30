@@ -10,6 +10,12 @@ module Larrow
           self.host = eip.address
           self.user = user || 'root'
         end
+
+        def prepare
+        end
+
+        def test
+        end
       end
     end
   end

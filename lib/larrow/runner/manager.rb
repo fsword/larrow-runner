@@ -6,18 +6,21 @@ module Larrow
     class Manager
       include Service
 
-      attr_accessor :target_url
+      attr_accessor :vcs
       attr_accessor :app
       def initialize target_url
-        self.target_url = Vcs.formatted target_url
+        self.vcs = Vcs.parse target_url
+      end
+
+      def preload
+        self.vcs.load_manifests
       end
 
       def go
-        self.app = Model::App.new target_url
+        self.app = Model::App.new vcs
         allocate app
-        app.prepare
-        app.action
         puts 'do script according .larrow'
+        app.action
         release app
       end
 

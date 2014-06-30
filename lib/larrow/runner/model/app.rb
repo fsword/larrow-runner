@@ -2,9 +2,9 @@ module Larrow
   module Runner
     module Model
       class App
-        attr_accessor :source_url, :node
-        def initialize source_url
-          self.source_url = source_url
+        attr_accessor :vcs, :node
+        def initialize vcs
+          self.vcs = vcs
         end
 
         def assign arg
@@ -13,10 +13,9 @@ module Larrow
           end
         end
 
-        def prepare
-        end
-
-        def action
+        def action skip_test=false
+          node.prepare
+          node.test unless skip_test
         end
 
       end
