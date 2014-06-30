@@ -1,6 +1,6 @@
 module Larrow
   module Runner
-    module Scm
+    module Vcs
       class Base
         def gen
           # assign one node for project by default

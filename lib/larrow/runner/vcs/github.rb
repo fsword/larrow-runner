@@ -1,7 +1,7 @@
 require 'octokit'
 module Larrow
   module Runner
-    module Scm
+    module Vcs
       class Github < Base
         attr_accessor :organize, :name
         # url sample:

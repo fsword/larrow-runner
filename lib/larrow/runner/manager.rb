@@ -11,8 +11,8 @@ module Larrow
 
       def go
         # TODO
-        scm =  Scm.parse target_url
-        self.app = scm.gen
+        vcs =  Vcs.parse target_url
+        self.app = vcs.gen
         allocate_resource app
         app.prepare
         app.default_action
@@ -20,7 +20,6 @@ module Larrow
         release_resource app
       end
 
-      private
       def allocate_resource app
         app.assign node: vm.create.first
       end
