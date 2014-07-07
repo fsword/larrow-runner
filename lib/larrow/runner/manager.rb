@@ -29,10 +29,7 @@ module Larrow
       end
 
       def release app
-        app.node.tap do |node|
-          node.instance.destroy
-          node.eip.destroy
-        end
+        app.node.destroy
       end
     end
   end

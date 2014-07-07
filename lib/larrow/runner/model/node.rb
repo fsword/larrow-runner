@@ -16,6 +16,12 @@ module Larrow
 
         def test
         end
+
+        def destroy
+          instance.destroy
+          eip.destroy
+          self
+        end
       end
     end
   end
