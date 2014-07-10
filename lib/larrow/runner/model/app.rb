@@ -2,9 +2,10 @@ module Larrow
   module Runner
     module Model
       class App
-        attr_accessor :vcs, :node
+        attr_accessor :vcs, :node, :configuration
         def initialize vcs
           self.vcs = vcs
+          self.configuration = vcs.load_manifest
         end
 
         def assign arg
@@ -14,10 +15,19 @@ module Larrow
         end
 
         def action skip_test=false
+          Manifest::Configuration::DEFINED_STEPS.each do |step_name|
+            do_step(configuration.steps, step_name)
+          end
+
           node.prepare
           node.test unless skip_test
         end
 
+        def do_step steps, name
+          return if steps[name].nil?
+          puts "[#{name}]"
+          puts steps[name].scripts.map(&:cmd).join("\n")
+        end
       end
     end
   end

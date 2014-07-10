@@ -13,13 +13,12 @@ module Larrow
       end
 
       def preload
-        self.vcs.load_manifests
+        self.vcs.load_manifest
       end
 
       def go
         self.app = Model::App.new vcs
         allocate app
-        puts 'do script according .larrow'
         app.action
         release app
       end

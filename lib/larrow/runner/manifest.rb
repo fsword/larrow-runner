@@ -7,8 +7,16 @@ module Larrow
       autoload :Configuration, 'larrow/runner/manifest/configuration'
       autoload :Travis, 'larrow/runner/manifest/adapter/travis'
 
+      def self.load_manifest source_accessor
+        @manifest ||= begin
+                        [ Travis, Larrow ].each do |clazz|
+                          configuration = clazz.new(source_accessor).load_manifest
+                          break configuration if configuration
+                        end
+                      end
+      end
+
       class Base
-        include Configuration
         attr_accessor :source_accessor
         def initialize source_accessor
           self.source_accessor = source_accessor
@@ -22,3 +30,4 @@ module Larrow
     end
   end
 end
+require 'larrow/runner/manifest/configuration'
