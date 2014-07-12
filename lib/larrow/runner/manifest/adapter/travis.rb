@@ -15,14 +15,13 @@ module Larrow
           self.configuration
         end
        
-        def map_step larrow_step, travis_step
-          scripts = (data[travis_step] || []).map do |cmd|
+        def map_step title, travis_title
+          scripts = (data[travis_title] || []).map do |cmd|
             Script.new cmd, {}
           end
           return nil if scripts.empty?
 
-          is_test = larrow_step.to_s.end_with?('_test')
-          configuration.steps[larrow_step] = Step.new(scripts, is_test)
+          configuration.steps[title] = Step.new(scripts, title)
         end
       end
     end

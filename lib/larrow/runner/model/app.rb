@@ -15,19 +15,11 @@ module Larrow
         end
 
         def action skip_test=false
-          Manifest::Configuration::DEFINED_STEPS.each do |step_name|
-            do_step(configuration.steps, step_name)
-          end
-
-          node.prepare
-          node.test unless skip_test
-        end
-
-        def do_step steps, name
-          return if steps[name].nil?
-          puts "\t\t[#{name}]"
-          steps[name].scripts.map(&:cmd).each do |cmd|
-            puts "\t\t#{cmd}"
+          configuration.each_step(skip_test) do |step|
+            node.execute *step.scripts.map(&:actual_command) do |data|
+              puts "\t#{data}"
+            end
+            #fail script.actual_command if script.is_fail_ignored
           end
         end
       end

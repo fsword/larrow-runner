@@ -11,14 +11,26 @@ module Larrow
         def initialize
           self.steps = Hash[ DEFINED_STEPS.product([nil]) ]
         end
+
+        def each_step skip_test
+          all_steps = if skip_test
+                        DEFINED_STEPS.select{|x| x.to_s !~ /test/}
+                      else
+                        DEFINED_STEPS
+                      end
+          all_steps.each do |title|
+            next if steps[title].nil?
+            yield steps[title]
+          end
+        end
       end
 
       # Describe a set of scripts to accomplish a specific goal
       class Step
-        attr_accessor :scripts, :is_test
-        def initialize scripts, is_test
+        attr_accessor :scripts, :title
+        def initialize scripts, title
           self.scripts = scripts
-          self.is_test = is_test
+          self.title = title
         end
       end
 
@@ -30,6 +42,10 @@ module Larrow
           self.cmd = cmd
           self.meta = meta
           self.is_fail_ignored = is_fail_ignored
+        end
+
+        def actual_command
+          cmd #TODO actual command is generated from cmd and meta
         end
       end
     end
