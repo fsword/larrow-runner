@@ -11,9 +11,7 @@ module Larrow
           after :each do
             subject.release
           end
-          it 'simple story' do
-            expect(subject.go).not_to be_nil
-          end
+          it{ expect(subject.go).not_to be_nil }
         end
       end
     end
