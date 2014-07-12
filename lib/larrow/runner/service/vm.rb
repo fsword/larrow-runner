@@ -12,10 +12,11 @@ module Larrow
         end
 
         def create count=1
-          instances = Qingcloud::Instance.create('trustysrvx64a','small_a',count:count)
-          eips = Qingcloud::Eip.create(count:count)
+          instances = Qingcloud::Instance.create('trustysrvx64a','small_a',count:count, login_mode: 'keypair')
 
+          eips = Qingcloud::Eip.create(count:count)
           instances.each{|x| x.wait_for :running}
+
           eips.each{|x| x.wait_for :available}
           
           (0...count).map do |i|
