@@ -18,16 +18,16 @@ module Larrow
 
       def go
         self.app = Model::App.new vcs
-        allocate app
+        allocate
         app.action
-        release app
+        release
       end
 
-      def allocate app
+      def allocate
         app.assign node: Model::Node.new(*vm.create.first)
       end
 
-      def release app
+      def release
         app.node.destroy
       end
     end
