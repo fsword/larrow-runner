@@ -5,8 +5,15 @@ module Larrow
       [
         'git@github.com:fsword/essh.git'
       ].each do |url|
-        it 'simple story' do
-          expect(Manager.new(url).go).not_to be_nil
+        describe url do
+          subject{ Manager.new url }
+
+          after :each do
+            subject.release
+          end
+          it 'simple story' do
+            expect(subject.go).not_to be_nil
+          end
         end
       end
     end
