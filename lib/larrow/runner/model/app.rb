@@ -25,8 +25,10 @@ module Larrow
 
         def do_step steps, name
           return if steps[name].nil?
-          puts "[#{name}]"
-          puts steps[name].scripts.map(&:cmd).join("\n")
+          puts "\t\t[#{name}]"
+          steps[name].scripts.map(&:cmd).each do |cmd|
+            puts "\t\t#{cmd}"
+          end
         end
       end
     end
