@@ -3,7 +3,7 @@ module Larrow::Runner::Service
   describe Executor do
     subject{ Executor.new 'localhost', `whoami`.chomp, 22, nil }
     it 'long time commands run'do
-      outputs = []
+      outputs = ''
       subject.execute(
         'echo aaa',
         'echo bbb',
@@ -11,7 +11,7 @@ module Larrow::Runner::Service
         'echo ccc',
         'sleep 1'
       ){|data| outputs << data}
-      expect(outputs).to eq ["aaa\nbbb\n","ccc\n"]
+      expect(outputs).to eq "aaa\nbbb\nccc\n"
     end
 
     it 'command sequence' do
@@ -21,6 +21,10 @@ module Larrow::Runner::Service
         'ls -l'
       ){|data| outputs << data}
       expect(outputs).to include(`whoami`)
+    end
+
+    it 'fail command' do
+      expect(->{subject.execute('false')}).to raise_error(ExecutionError)
     end
   end
 end

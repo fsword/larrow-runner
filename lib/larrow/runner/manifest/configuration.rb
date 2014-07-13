@@ -19,8 +19,7 @@ module Larrow
                         DEFINED_STEPS
                       end
           all_steps.each do |title|
-            next if steps[title].nil?
-            yield steps[title]
+            yield steps[title] if steps[title]
           end
         end
       end

@@ -1,0 +1,1 @@
+ExecutionError = Class.new StandardError

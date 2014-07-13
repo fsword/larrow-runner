@@ -15,9 +15,9 @@ module Larrow
         end
 
         def action skip_test=false
-          configuration.each_step(skip_test) do |step|
-            node.execute *step.scripts.map(&:actual_command) do |data|
-              puts "\t#{data}"
+          configuration.each_step(skip_test) do |a_step|
+            node.execute a_step.scripts.map(&:actual_command) do |data|
+              Logger.info "\t#{data}"
             end
             #fail script.actual_command if script.is_fail_ignored
           end
