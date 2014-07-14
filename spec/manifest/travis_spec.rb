@@ -14,18 +14,21 @@ module Larrow::Runner::Manifest
       end
     end
 
-    before do
-      @travis_mock = FileLoad.new 'travis.yml'
+    subject do
+      Travis.new(FileLoad.new 'travis.yml').load_manifest
     end
 
-    subject{ Travis.new @travis_mock }
     it 'parse the manifest file' do
-      build = subject.load_manifest
-      expect(build.steps[:prepare].scripts.size).to eq(5)
-
-      step = build.steps[:functional_test]
+      expect(subject.steps[:prepare].scripts.size).to eq(5)
+      step = subject.steps[:functional_test]
       expect(step.scripts.size).to eq(1)
       expect(step.scripts.first.cmd).to eq('./rebar compile ct')
+    end
+
+    it 'support erlang' do
+      scripts = subject.steps[:init].scripts
+      expect(scripts.first.cmd).to include('activate')
+      expect(scripts.first.cmd).to include('r16')
     end
   end
 end

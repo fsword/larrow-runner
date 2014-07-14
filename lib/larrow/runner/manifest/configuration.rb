@@ -3,10 +3,15 @@ module Larrow
     module Manifest
       # The top of manifest model which store Steps information 
       class Configuration
-        DEFINED_STEPS = [:prepare, 
-                         :compile, :unit_test, 
+        DEFINED_STEPS = [:init, #inner step
+                         :prepare, 
+                         :compile, :unit_test,
+                         :before_install, #inner_step
                          :install, :functional_test, 
-                         :start, :integration_test]
+                         :before_start, #inner_step
+                         :start, :integration_test,
+                         :after_start, :complete #inner_step
+                        ]
         attr_accessor :steps
         def initialize
           self.steps = Hash[ DEFINED_STEPS.product([nil]) ]
