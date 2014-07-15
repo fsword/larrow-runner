@@ -29,6 +29,14 @@ module Larrow
           url = URL_TEMPLATE % [organize, name, branch, filename]
           Faraday.get(url).body
         end
+
+        def source_sync_script
+          ["git clone ",
+           "--depth 1",
+           "http://github.com/%s/%s.git",
+           "-b %s"
+          ].join(' ') % [organize, name, branch]
+        end
       end
     end
   end

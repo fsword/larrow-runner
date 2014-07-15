@@ -14,6 +14,11 @@ module Larrow
         end
 
         it { expect(subject.get '/.travis').not_to be_empty }
+        it { expect(system subject.source_sync_script).to be true }
+        
+        after do
+          `rm -rf essh`
+        end
       end
     end
   end
