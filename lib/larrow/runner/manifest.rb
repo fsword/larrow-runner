@@ -34,7 +34,7 @@ module Larrow
         end
 
         def base_scripts
-          args = {nfs_ip: 'xxxxx', target: '/media/cdrom'}
+          args = {nfs_ip: '10.50.27.146', target: '/media/cdrom'}
 
           ['apt-get install git -q -y',
            'apt-get install libssl-dev -q -y',
