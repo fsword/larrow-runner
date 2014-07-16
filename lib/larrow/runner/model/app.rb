@@ -18,7 +18,7 @@ module Larrow
           configuration.each_step(skip_test) do |a_step|
             a_step.scripts.each do |script|
               binding.pry
-              node.execute script.actual_command do
+              node.execute script.actual_command do |data|
                 Logger.info "\t#{data}"
               end
             end
