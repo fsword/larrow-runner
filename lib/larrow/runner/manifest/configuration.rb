@@ -20,7 +20,7 @@ module Larrow
 
         def put_to_step title, *scripts
           steps[title] ||= Step.new(nil, title)
-          steps[title].scripts << scripts.flatten
+          steps[title].scripts += scripts.flatten
         end
 
         def each_step skip_test
