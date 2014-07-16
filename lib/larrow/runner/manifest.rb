@@ -36,11 +36,9 @@ module Larrow
         def base_scripts
           args = {nfs_ip: '10.50.27.146', target: '/media/cdrom'}
 
-          ['apt-get install git -q -y',
-           'apt-get install libssl-dev -q -y',
-           'apt-get install nfs-common portmap -q -y',
            'rmmod rpcsec_gss_krb5',
            'mount %{nsf_ip}:/opt %{target}',
+           'apt-get install git libssl-dev nfs-common portmap -q -y',
            'cp -a %{target}/usr/local/rvm /usr/local/rvm',
            'cp -a %{target}/usr/local/bin/* /usr/local/bin/',
            'cp -a %{target}/home/* $HOME/',
