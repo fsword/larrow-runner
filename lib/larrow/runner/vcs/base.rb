@@ -2,8 +2,8 @@ module Larrow
   module Runner
     module Vcs
       class Base
-        def load_manifest
-          Manifest.load_manifest self
+        def load_configuration
+          Manifest.load_configuration(self)
         end
 
         def formatted_url

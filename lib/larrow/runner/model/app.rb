@@ -5,7 +5,7 @@ module Larrow
         attr_accessor :vcs, :node, :configuration
         def initialize vcs
           self.vcs = vcs
-          self.configuration = vcs.load_manifest
+          self.configuration = vcs.load_configuration
         end
 
         def assign arg
@@ -16,8 +16,11 @@ module Larrow
 
         def action skip_test=false
           configuration.each_step(skip_test) do |a_step|
-            node.execute a_step.scripts.map(&:actual_command) do |data|
-              Logger.info "\t#{data}"
+            a_step.scripts.each do |script|
+              binding.pry
+              node.execute script.actual_command do
+                Logger.info "\t#{data}"
+              end
             end
             #fail script.actual_command if script.is_fail_ignored
           end

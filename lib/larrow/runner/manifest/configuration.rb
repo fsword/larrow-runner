@@ -4,6 +4,7 @@ module Larrow
       # The top of manifest model which store Steps information 
       class Configuration
         DEFINED_STEPS = [:init, #inner step
+                         :source_sync, #inner step
                          :prepare, 
                          :compile, :unit_test,
                          :before_install, #inner_step
@@ -15,6 +16,11 @@ module Larrow
         attr_accessor :steps
         def initialize
           self.steps = Hash[ DEFINED_STEPS.product([nil]) ]
+        end
+
+        def put_to_step title, *scripts
+          steps[title] ||= Step.new(nil, title)
+          steps[title].scripts << scripts.flatten
         end
 
         def each_step skip_test
@@ -33,7 +39,7 @@ module Larrow
       class Step
         attr_accessor :scripts, :title
         def initialize scripts, title
-          self.scripts = scripts
+          self.scripts = scripts || []
           self.title = title
         end
       end
@@ -41,15 +47,17 @@ module Larrow
       # store the real command line
       #   :is_fail_ignored used to declare `non-zero retcode of current script can be ignored`
       class Script
-        attr_accessor :cmd, :meta, :is_fail_ignored
-        def initialize cmd, meta, is_fail_ignored=nil
+        attr_accessor :cmd, :args, :is_fail_ignored
+        def initialize cmd, args:{}, is_fail_ignored:nil
           self.cmd = cmd
-          self.meta = meta
+          self.args = args
           self.is_fail_ignored = is_fail_ignored
         end
 
         def actual_command
-          cmd #TODO actual command is generated from cmd and meta
+          sprintf(cmd, args).tap do |command|
+            Logger.info "actual: #{command} - #{cmd}: #{args}"
+          end
         end
       end
     end

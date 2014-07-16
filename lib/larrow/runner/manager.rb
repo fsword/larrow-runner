@@ -21,7 +21,7 @@ module Larrow
       end
 
       def preload
-        self.vcs.load_manifest
+        self.vcs.load_configuration
         @state = :preload
       end
 

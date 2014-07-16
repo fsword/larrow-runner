@@ -12,7 +12,8 @@ module Larrow
         end
 
         def create count=1
-          instances = Qingcloud::Instance.create('trustysrvx64a','small_a',count:count, login_mode: 'keypair')
+          image_id = 'trustysrvx64a'
+          instances = Qingcloud::Instance.create(image_id,'small_a',count:count, login_mode: 'keypair')
 
           eips = Qingcloud::Eip.create(count:count)
           instances.each{|x| x.wait_for :running}
