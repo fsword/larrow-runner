@@ -37,8 +37,8 @@ module Larrow
           args = {nfs_ip: '10.50.27.146', target: '/media/cdrom'}
 
            'rmmod rpcsec_gss_krb5',
-           'mount %{nsf_ip}:/opt %{target}',
            'apt-get install git libssl-dev nfs-common portmap -q -y',
+           'mount %{nfs_ip}:/opt %{target}',
            'cp -a %{target}/usr/local/rvm /usr/local/rvm',
            'cp -a %{target}/usr/local/bin/* /usr/local/bin/',
            'cp -a %{target}/home/* $HOME/',
