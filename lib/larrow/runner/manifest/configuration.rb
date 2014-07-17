@@ -45,13 +45,14 @@ module Larrow
       end
 
       # store the real command line
-      #   :is_fail_ignored used to declare `non-zero retcode of current script can be ignored`
+      #   :cannt_fail used to declare `non-zero retcode of current script will be fail`
       class Script
-        attr_accessor :cmd, :args, :is_fail_ignored
-        def initialize cmd, args:{}, is_fail_ignored:nil
+        attr_accessor :cmd, :base_dir, :args, :cannt_fail
+        def initialize cmd, base_dir:nil, args:{}, cannt_fail: true
           self.cmd = cmd
           self.args = args
-          self.is_fail_ignored = is_fail_ignored
+          self.cannt_fail = cannt_fail
+          self.base_dir = base_dir
         end
 
         def actual_command

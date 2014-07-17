@@ -5,11 +5,11 @@ module Larrow::Runner::Service
     it 'long time commands run'do
       outputs = ''
       subject.execute(
-        'echo aaa',
+        ['echo aaa',
         'echo bbb',
         'sleep 1',
         'echo ccc',
-        'sleep 1'
+        'sleep 1'].join(' && ')
       ){|data| outputs << data}
       expect(outputs).to eq "aaa\nbbb\nccc\n"
     end
@@ -17,8 +17,8 @@ module Larrow::Runner::Service
     it 'command sequence' do
       outputs = ''
       subject.execute(
-        'cd $HOME/..',
-        'ls -l'
+        ['cd $HOME/..',
+        'ls -l'].join(' && ')
       ){|data| outputs << data}
       expect(outputs).to include(`whoami`)
     end

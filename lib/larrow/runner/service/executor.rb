@@ -14,8 +14,7 @@ module Larrow
           self.password = password
         end
 
-        def execute *cmds, base_dir:nil, ignore_fail: false
-          cmds = cmds.flatten
+        def execute cmd, base_dir:nil, cannt_fail: true
           Net::SSH.start(ip,user) do |session|
             session.open_channel do |chx|
               chx.exec("bash -l") do |ch, success|
@@ -36,14 +35,15 @@ module Larrow
                 ch.on_request('exit-status') do |c,data|
                   status = data.read_long
                   Logger.info "exit status(ch:#{ch.object_id}): #{status}"
-                  fail ExecutionError, cmds.join("\n") if status != 0
+                  fail ExecutionError, cmd if status != 0 && cannt_fail
                 end
                 
                 ch.send_data "export TERM=vt100\n"
-                cmds.each do |cmd|
-                  ch.send_data "#{cmd}\n"
-                  Logger.info "call command(ch:#{ch.object_id}): #{cmd}"
-                end
+                ch.send_data "cd #{base_dir}\n" if base_dir
+
+                ch.send_data "#{cmd}\n"
+                Logger.info "call command(ch:#{ch.object_id}): #{cmd}"
+                
                 ch.send_data "exit\n"
               end
             end.wait

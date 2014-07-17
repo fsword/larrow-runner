@@ -17,12 +17,12 @@ module Larrow
         def action skip_test=false
           configuration.each_step(skip_test) do |a_step|
             a_step.scripts.each do |script|
-              binding.pry
-              node.execute script.actual_command do |data|
+              node.execute(script.actual_command,
+                           base_dir:script.base_dir
+                          ) do |data|
                 Logger.info "\t#{data}"
               end
             end
-            #fail script.actual_command if script.is_fail_ignored
           end
         end
       end

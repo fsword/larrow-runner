@@ -12,8 +12,8 @@ module Larrow
           @executor = Service::Executor.new host, user, nil, nil
         end
 
-        def execute *commands
-          @executor.execute commands do |data|
+        def execute command, base_dir: nil
+          @executor.execute command, base_dir: base_dir do |data|
             yield data
           end
         end

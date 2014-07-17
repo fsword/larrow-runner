@@ -17,7 +17,7 @@ module Larrow
        
         def map_step title, travis_title
           scripts = (data[travis_title] || []).map do |cmd|
-            Script.new cmd
+            Script.new cmd, base_dir: '$HOME/source'
           end
           return nil if scripts.empty?
 
@@ -40,7 +40,7 @@ module Larrow
                      else 'r17'
                      end rescue 'r17'
           activate_path = sprintf(TEMPLATE_PATH,revision)
-          s = Script.new "echo 'source #{activate_path}' > $HOME/.bashrc"
+          s = Script.new "echo 'source #{activate_path}' >> $HOME/.bashrc"
           configuration.put_to_step :init, s
         end
       end

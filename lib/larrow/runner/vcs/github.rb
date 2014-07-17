@@ -34,7 +34,7 @@ module Larrow
           ["git clone ",
            "--depth 1",
            "http://github.com/%s/%s.git",
-           "-b %s"
+           "-b %s $HOME/source"
           ].join(' ') % [organize, name, branch]
         end
       end
