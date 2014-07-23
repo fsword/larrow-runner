@@ -27,8 +27,6 @@ module Larrow
           content = source_accessor.get self.class.const_get 'CONFIG_FILE'
           return nil if content.nil?
 
-          binding.pry
-
           self.configuration = Configuration.new
           configuration.put_to_step :init, base_scripts
           
@@ -36,7 +34,7 @@ module Larrow
         end
 
         def base_scripts
-          args = {nfs_ip: '10.50.27.146', target: '/media/cdrom'}
+          args = {nfs_ip: '10.50.21.244', target: '/media/cdrom'}
 
           ['apt-get update',
            'apt-get install git libssl-dev nfs-common portmap -q -y',
