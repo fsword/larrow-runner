@@ -2,25 +2,18 @@ require_relative '../spec_helper.rb'
 module Larrow::Runner::Service
   describe Executor do
     subject{ Executor.new 'localhost', `whoami`.chomp, 22, nil }
-    it 'long time commands run'do
+    it 'normal command run'do
       outputs = ''
-      subject.execute(
-        ['echo aaa',
-        'echo bbb',
-        'sleep 1',
-        'echo ccc',
-        'sleep 1'].join(' && ')
-      ){|data| outputs << data}
-      expect(outputs).to eq "aaa\nbbb\nccc\n"
+      subject.execute('echo aaa'){|data| outputs << data}
+      expect(outputs).to eq "aaa\n"
     end
 
-    it 'command sequence' do
+    it 'command with base dir' do
       outputs = ''
-      subject.execute(
-        ['cd $HOME/..',
-        'ls -l'].join(' && ')
-      ){|data| outputs << data}
-      expect(outputs).to include(`whoami`)
+      subject.execute('pwd', base_dir: '/opt') do |data|
+        outputs << data
+      end
+      expect(outputs).to eq "/opt\n"
     end
 
     it 'fail command' do
