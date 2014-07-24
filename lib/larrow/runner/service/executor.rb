@@ -11,11 +11,12 @@ module Larrow
           self.user     = user
           self.port     = port
           self.password = password
-          @session = Net::SSH.start(ip,user)
+          @connection = Net::SSH.start(ip,user)
+          @canceling = nil
         end
 
         def execute cmd, base_dir:nil, cannt_fail: true, &output_callback
-          @session.open_channel do |ch|
+          @connection.open_channel do |ch|
             Logger.info "call command(ch:#{ch.object_id}): #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
@@ -39,7 +40,11 @@ module Larrow
                 fail ExecutionError,cmd if status != 0
               end
             end
-          end.wait
+          end
+          trap("INT") { @canceling = true }
+          @connection.loop(0.1) do
+            not (@canceling || @connection.channels.empty?)
+          end
         end
 
         def scp local_file_path, remote_file_path
