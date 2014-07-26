@@ -17,6 +17,7 @@ module Larrow
         preload
         allocate
         app.action
+      ensure
         release
       end
 

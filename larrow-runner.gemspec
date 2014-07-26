@@ -19,18 +19,19 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.6"
-  spec.add_development_dependency 'rake', '~> 0'
-  spec.add_development_dependency "rspec",'~> 0'
-  spec.add_development_dependency "pry",  '~> 0'
+  spec.add_development_dependency 'rake', '~> 10'
+  spec.add_development_dependency "rspec",'~> 3'
+  spec.add_development_dependency "pry", '~> 0'
   spec.add_development_dependency "pry-nav", '~> 0'
   spec.add_development_dependency "simplecov", '~> 0'
 
-  spec.add_runtime_dependency 'tilt', '~> 0'
-  spec.add_runtime_dependency 'listen', '~> 0'
-  spec.add_runtime_dependency 'thor', '~> 0'     
+  spec.add_runtime_dependency 'tilt', '~> 2'
+  spec.add_runtime_dependency 'thor', '~> 0'
   spec.add_runtime_dependency "activesupport", "~> 4.1"
 
-  spec.add_runtime_dependency 'net-ssh', '~> 0'
+  spec.add_runtime_dependency 'net-ssh', '~> 2'
+  spec.add_runtime_dependency 'net-scp', '~> 1'
+
   spec.add_runtime_dependency "faraday", '~> 0'
  
   spec.add_runtime_dependency 'larrow-qingcloud', '~> 0'     
