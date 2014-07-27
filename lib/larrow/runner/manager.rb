@@ -10,7 +10,16 @@ module Larrow
       attr_accessor :app
       def initialize target_url
         @state = :init
+        signal_trap
         self.vcs = Vcs.parse target_url
+      end
+
+      def signal_trap
+        trap('INT') do
+          Logger.info 'try to release'
+          release
+          ::Kernel.exit
+        end
       end
 
       def go
