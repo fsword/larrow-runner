@@ -1,12 +1,12 @@
-# Larrow::Core
+# Larrow::Runner
 
-Core application of larrow
+a runner which build your application
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
-    gem 'larrow-core'
+    gem 'larrow-runner'
 
 And then execute:
 
