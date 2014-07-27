@@ -13,7 +13,7 @@ module Larrow::Runner::Manifest
         File.read(path)
       end
 
-      def source_sync_script; [] end
+      def source_sync_script; '' end
     end
 
     subject do
@@ -29,8 +29,9 @@ module Larrow::Runner::Manifest
 
     it 'support erlang' do
       scripts = subject.steps[:init].scripts
-      expect(scripts.first.cmd).to include('activate')
-      expect(scripts.first.cmd).to include('r16')
+      commands = scripts.map(&:actual_command).join("\n")
+      expect(commands).to include('activate')
+      expect(commands).to include('r16')
     end
   end
 end
