@@ -6,7 +6,8 @@ module Larrow::Runner::Model
     subject{ Node.new nil, OpenStruct.new(address: 'localhost'), `whoami`.chomp }
     it 'can execute' do
       outputs = ""
-      subject.execute('pwd') do |data|
+      script = OpenStruct.new(actual_command: 'pwd')
+      subject.execute(script) do |data|
         outputs << data
       end
       expect(outputs).to include('home')

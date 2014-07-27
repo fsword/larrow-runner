@@ -21,14 +21,19 @@ module Larrow
 
       desc 'version','show version of larrow-runner'
       def version
-        puts ::Larrow::Runner::VERSION
+        puts VERSION
       end
 
       desc 'go <target_url>','execute your app'
       long_desc <<-EOF
 larrow will build a whole world for your application
 EOF
+      option :debug
       def go url
+        if options[:debug]
+          String.send :include, Helper::Scriptable
+          Option[:debug] = true
+        end
         Manager.new(url).go
       end
      

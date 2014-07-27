@@ -19,11 +19,7 @@ module Larrow
             Logger.info "#{a_step.title}: begin"
             begin_at = Time.new
             a_step.scripts.each do |script|
-              node.execute(script.actual_command,
-                           base_dir:script.base_dir
-                          ) do |data|
-                Logger.info "\t#{data}"
-              end
+              node.execute script
             end
             during = sprintf('%.2f',Time.new - begin_at)
             Logger.info "#{a_step.title}: end (#{during}s)"

@@ -57,7 +57,7 @@ module Larrow
 
         def actual_command
           sprintf(cmd, args).tap do |command|
-            Logger.info "actual: #{command} - #{cmd}: #{args}"
+            # Logger.info "actual: #{command} - #{cmd}: #{args}"
           end
         end
       end

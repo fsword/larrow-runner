@@ -10,6 +10,7 @@ module Larrow
              else
                Logger.new $stdout
              end
+    Option = {}.with_indifferent_access
   end
 end
 
@@ -18,6 +19,7 @@ require 'larrow/runner/errors'
 require 'larrow/runner/vcs'
 require 'larrow/runner/manifest'
 require 'larrow/runner/service'
+require 'larrow/runner/helper'
 
 require 'larrow/runner/manager'
 require 'larrow/runner/command'

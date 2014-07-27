@@ -12,10 +12,12 @@ module Larrow::Runner::Manifest
         path = File.expand_path "../../fixtures/#{filename}", __FILE__
         File.read(path)
       end
+
+      def source_sync_script; [] end
     end
 
     subject do
-      Travis.new(FileLoad.new 'travis.yml').load_manifest
+      Travis.new(FileLoad.new 'travis.yml').load
     end
 
     it 'parse the manifest file' do

@@ -12,11 +12,11 @@ module Larrow
           @executor = Service::Executor.new host, user, nil, nil
         end
 
-        def execute command, base_dir: nil
+        def execute script, &block
+          command = script.actual_command
+          base_dir = script.base_dir
           Logger.info "cmd: #{command}"
-          @executor.execute command, base_dir: base_dir do |data|
-            yield data
-          end
+          @executor.execute command, base_dir: base_dir, &block
         end
 
         def destroy

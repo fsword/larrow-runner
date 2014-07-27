@@ -13,31 +13,35 @@ module Larrow
           self.password = password
           @connection = Net::SSH.start(ip,user)
           @canceling = nil
-          @logger = ::Logger.new "#{ip}_cmd.log"
+          if Option[:debug]
+            @logger = ::Logger.new $stdout
+          else
+            @logger = ::Logger.new "#{ip}_cmd.log"
+          end
         end
 
-        def execute cmd, base_dir:nil, cannt_fail: true, &output_callback
+        def execute cmd, base_dir:nil, cannt_fail: true
           @connection.open_channel do |ch|
-            @logger.info "call command(ch:#{ch.object_id}): #{cmd}"
+            info "\tcmd: #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
               ch.on_data do |c, data|
                 if block_given?
                   yield data
                 else
-                 @logger.info "get stdout(ch:#{ch.object_id}): #{data}"
+                 info "\t\tstdout: #{data}"
                 end
               end
               ch.on_extended_data do |c, type, data|
                 if block_given?
                   yield data
                 else
-                 @logger.info "get stderr(ch:#{ch.object_id},#{type}): #{data}"
+                 info "\t\tstderr: #{data}"
                 end
               end
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
-               @logger.info "exit status(ch:#{ch.object_id}): #{status}"
+                info "\t\texit status: #{status}"
                 fail ExecutionError,cmd if status != 0
               end
             end
@@ -50,6 +54,14 @@ module Larrow
 
         def scp local_file_path, remote_file_path
           raise 'not completed.'
+        end
+
+        def info msg
+          if Option[:debug]
+            @logger.info msg.detail
+          else
+            @logger.info msg
+          end
         end
       end
     end
