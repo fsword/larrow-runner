@@ -21,3 +21,6 @@ module Larrow
     end
   end
 end
+
+String.send :include, Larrow::Runner::Helper::Scriptable
+

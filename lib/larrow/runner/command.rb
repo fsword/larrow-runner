@@ -30,10 +30,7 @@ larrow will build a whole world for your application
 EOF
       option :debug
       def go url
-        if options[:debug]
-          String.send :include, Helper::Scriptable
-          Option[:debug] = true
-        end
+        Option.update options
         Manager.new(url).go
       end
      
