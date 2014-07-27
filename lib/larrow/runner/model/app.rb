@@ -16,6 +16,8 @@ module Larrow
 
         def action skip_test=false
           configuration.each_step(skip_test) do |a_step|
+            Logger.info "#{a_step.title}: begin"
+            begin_at = Time.new
             a_step.scripts.each do |script|
               node.execute(script.actual_command,
                            base_dir:script.base_dir
@@ -23,6 +25,8 @@ module Larrow
                 Logger.info "\t#{data}"
               end
             end
+            during = sprintf('%.2f',Time.new - begin_at)
+            Logger.info "#{a_step.title}: end (#{during}s)"
           end
         end
       end

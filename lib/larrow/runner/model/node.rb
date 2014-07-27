@@ -13,6 +13,7 @@ module Larrow
         end
 
         def execute command, base_dir: nil
+          Logger.info "cmd: #{command}"
           @executor.execute command, base_dir: base_dir do |data|
             yield data
           end

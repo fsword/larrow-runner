@@ -13,30 +13,31 @@ module Larrow
           self.password = password
           @connection = Net::SSH.start(ip,user)
           @canceling = nil
+          @logger = ::Logger.new "#{ip}_cmd.log"
         end
 
         def execute cmd, base_dir:nil, cannt_fail: true, &output_callback
           @connection.open_channel do |ch|
-            Logger.info "call command(ch:#{ch.object_id}): #{cmd}"
+            @logger.info "call command(ch:#{ch.object_id}): #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
               ch.on_data do |c, data|
                 if block_given?
                   yield data
                 else
-                  Logger.info "get stdout(ch:#{ch.object_id}): #{data}"
+                 @logger.info "get stdout(ch:#{ch.object_id}): #{data}"
                 end
               end
               ch.on_extended_data do |c, type, data|
                 if block_given?
                   yield data
                 else
-                  Logger.info "get stderr(ch:#{ch.object_id},#{type}): #{data}"
+                 @logger.info "get stderr(ch:#{ch.object_id},#{type}): #{data}"
                 end
               end
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
-                Logger.info "exit status(ch:#{ch.object_id}): #{status}"
+               @logger.info "exit status(ch:#{ch.object_id}): #{status}"
                 fail ExecutionError,cmd if status != 0
               end
             end
