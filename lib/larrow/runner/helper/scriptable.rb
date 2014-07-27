@@ -2,7 +2,11 @@ module Larrow
   module Runner
     module Helper
       module Scriptable
-        def strong
+        def title
+          color 33
+        end
+
+        def warn
           color 31
         end
 
