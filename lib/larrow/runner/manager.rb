@@ -37,7 +37,7 @@ module Larrow
       end
 
       def allocate
-        Logger.info '---------allocating resource--------'
+        Logger.info '---------allocating resource-------'
         begin_at = Time.new
         self.app = Model::App.new vcs
         self.app.assign node: Model::Node.new(*vm.create.first)

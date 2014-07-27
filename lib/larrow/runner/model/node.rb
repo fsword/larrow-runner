@@ -15,7 +15,6 @@ module Larrow
         def execute script, &block
           command = script.actual_command
           base_dir = script.base_dir
-          Logger.info "cmd: #{command}"
           @executor.execute command, base_dir: base_dir, &block
         end
 

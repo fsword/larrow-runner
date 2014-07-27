@@ -14,7 +14,7 @@ module Larrow
           @connection = Net::SSH.start(ip,user)
           @canceling = nil
           if Option[:debug]
-            @logger = ::Logger.new $stdout
+            @logger = Logger
           else
             @logger = ::Logger.new "#{ip}_cmd.log"
           end
@@ -22,21 +22,25 @@ module Larrow
 
         def execute cmd, base_dir:nil, cannt_fail: true
           @connection.open_channel do |ch|
-            info "\tcmd: #{cmd}"
+            if Option[:debug]
+              info "\tcmd: #{cmd}"
+            else
+              Logger.info "\tcmd: #{cmd}"
+            end
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
               ch.on_data do |c, data|
                 if block_given?
                   yield data
                 else
-                 info "\t\tstdout: #{data}"
+                 info "\t\t #{data}"
                 end
               end
               ch.on_extended_data do |c, type, data|
                 if block_given?
                   yield data
                 else
-                 info "\t\tstderr: #{data}"
+                 info "\t\t #{data}",:warn
                 end
               end
               ch.on_request('exit-status') do |c,data|
@@ -56,9 +60,9 @@ module Larrow
           raise 'not completed.'
         end
 
-        def info msg
+        def info msg, decorator=:detail
           if Option[:debug]
-            @logger.info msg.detail
+            @logger.info msg.send decorator
           else
             @logger.info msg
           end
