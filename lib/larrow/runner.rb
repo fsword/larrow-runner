@@ -5,11 +5,11 @@ require 'active_support/core_ext/hash'
 
 module Larrow
   module Runner
-    Logger = if ENV['RUN_AS']=='test'
-               Logger.new 'test.log'
-             else
-               Logger.new $stdout
-             end
+    RunLogger = if ENV['RUN_AS']=='test'
+                  Logger.new 'test.log'
+                else
+                  Logger.new $stdout
+                end
     Option = {}.with_indifferent_access
   end
 end

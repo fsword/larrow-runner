@@ -25,7 +25,7 @@ module Larrow
             if Option[:debug]
               info "\tcmd: #{cmd}"
             else
-              Logger.info "\tcmd: #{cmd}"
+              RunLogger.info "\tcmd: #{cmd}"
             end
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
