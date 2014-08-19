@@ -20,6 +20,10 @@ module Larrow::Runner
       @color = color
     end
 
+    def nocolor
+      @color = nil
+    end
+
     def level level
       Logger.new @inner_logger, level: level, color: @color
     end

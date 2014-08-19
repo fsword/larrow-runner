@@ -32,6 +32,7 @@ EOF
       option :nocolor
       def go url
         Option.update options
+        RunLogger.nocolor if Option.key? :nocolor
         Manager.new(url).go
       end
      
