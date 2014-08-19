@@ -11,6 +11,9 @@ module Larrow::Runner
                       else
                         ::Logger.new logger
                       end
+      @inner_logger.formatter = proc do |_severity, datetime, _progname, msg|
+           "[#{datetime.strftime('%H:%M:%S')}] #{msg}\n"
+      end
       @level = level
       @color = color
     end
