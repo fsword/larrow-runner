@@ -16,7 +16,7 @@ module Larrow
 
       def signal_trap
         trap('INT') do
-          RunLogger.info 'try to release'
+          RunLogger.color('red').info 'try to release'
           release
           ::Kernel.exit
         end
@@ -31,27 +31,27 @@ module Larrow
       end
 
       def preload
-        RunLogger.info '---------load configuration--------'
+        RunLogger.color('yellow').info 'load configuration'
         self.vcs.load_configuration
         @state = :preload
       end
 
       def allocate
-        RunLogger.info '---------allocating resource-------'
+        RunLogger.color('yellow').info 'allocating resource'
         begin_at = Time.new
         self.app = Model::App.new vcs
         self.app.assign node: Model::Node.new(*vm.create.first)
         during = sprintf('%.2f', Time.new - begin_at)
-        RunLogger.info "---------allocated(#{during}s)--------"
+        RunLogger.level(1).color('blue').info "allocated(#{during}s)"
         @state = :allocate
       end
 
       def release
-        RunLogger.info '---------releasing resource--------'
+        RunLogger.color('yellow').info 'releasing resource'
         begin_at = Time.new
         app.node.destroy if @state != :release
         during = sprintf('%.2f', Time.new - begin_at)
-        RunLogger.info "---------released(#{during}s)--------"
+        RunLogger.level(1).color('blue').info "released(#{during}s)"
         @state = :release
       end
     end
