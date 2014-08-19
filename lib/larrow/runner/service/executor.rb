@@ -21,28 +21,32 @@ module Larrow
             RunLogger.level(2).color('magenta').info "# #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
-              ch.on_data do |c, data|
-                if block_given?
-                  yield data
-                else
-                  data.split(/\r?\n/).each do |msg|
-                    RunLogger.level(2).info data
+              if Option.key? :debug
+                ch.on_data do |c, data|
+                  if block_given?
+                    yield data
+                  else
+                    data.split(/\r?\n/).each do |msg|
+                      RunLogger.level(2).info data
+                    end
                   end
                 end
-              end
-              ch.on_extended_data do |c, type, data|
-                if block_given?
-                  yield data
-                else
-                  data.split(/\r?\n/).each do |msg|
-                    RunLogger.level(2).info data
+                ch.on_extended_data do |c, type, data|
+                  if block_given?
+                    yield data
+                  else
+                    data.split(/\r?\n/).each do |msg|
+                      RunLogger.level(2).info data
+                    end
                   end
                 end
               end
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
-                RunLogger.level(2).color('green').info "exit #{status}"
-                fail ExecutionError,cmd if status != 0
+                if Option.key? :debug
+                  RunLogger.level(2).color('green').info "exit #{status}"
+                  fail ExecutionError,cmd if status != 0
+                end
               end
             end
           end

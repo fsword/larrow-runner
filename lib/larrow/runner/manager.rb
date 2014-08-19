@@ -26,6 +26,8 @@ module Larrow
         preload
         allocate
         app.action
+      rescue Exception
+        binding.pry if Option.key? :debug
       ensure
         release
       end

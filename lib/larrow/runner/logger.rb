@@ -20,6 +20,7 @@ module Larrow::Runner
     end
 
     def color color
+      return self unless Option.key? :debug
       Logger.new @inner_logger, level: @level, color: color
     end
 

@@ -1,7 +1,10 @@
-require "larrow/runner/version"
-require 'larrow/runner/logger'
 require 'active_support/deprecation'
 require 'active_support/core_ext/hash'
+require 'pry'
+require 'pry-nav'
+
+require "larrow/runner/version"
+require 'larrow/runner/logger'
 
 module Larrow
   module Runner
