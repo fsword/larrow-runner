@@ -16,13 +16,13 @@ module Larrow
 
         def action skip_test=false
           configuration.each_step(skip_test) do |a_step|
-            RunLogger.level(1).info "[#{a_step.title}]".title
+            RunLogger.info "[#{a_step.title}]".title
             begin_at = Time.new
             a_step.scripts.each do |script|
               node.execute script
             end
             during = sprintf('%.2f',Time.new - begin_at)
-            RunLogger.level(2).info "\t#{a_step.title} complete (#{during}s)".detail
+            RunLogger.level(1).info "#{a_step.title} complete (#{during}s)".detail
           end
         end
       end
