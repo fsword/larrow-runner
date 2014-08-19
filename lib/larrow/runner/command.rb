@@ -29,6 +29,7 @@ module Larrow
 larrow will build a whole world for your application
 EOF
       option :debug
+      option :nocolor
       def go url
         Option.update options
         Manager.new(url).go

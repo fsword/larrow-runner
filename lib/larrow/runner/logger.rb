@@ -4,8 +4,10 @@ module Larrow::Runner
   # usage:
   # logger = Larrow::Runner::Logger filename
   # logger.level(3).color('red').info 'hello'
+  # logger.level(3).title 'hello'
+  # logger.level(3).detail 'hello'
   class Logger
-    def initialize logger, level:nil, color:nil
+    def initialize logger, level:nil, color:'magenta'
       @inner_logger = if logger.is_a? ::Logger
                         logger
                       else
@@ -23,7 +25,7 @@ module Larrow::Runner
     end
 
     def color color
-      return self unless Option.key? :debug
+      return self if Option.key? :nocolor # skip color when no color
       Logger.new @inner_logger, level: @level, color: color
     end
 
@@ -31,6 +33,14 @@ module Larrow::Runner
       indent = "  " * (@level || 0)
       wrapped = wrap_color msg
       @inner_logger.info "#{indent}#{wrapped}"
+    end
+
+    def title msg
+      color('yellow').info msg
+    end
+
+    def detail msg
+      color('green').info msg
     end
 
     def wrap_color msg

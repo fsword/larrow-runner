@@ -34,7 +34,7 @@ module Larrow
         end
 
         def base_scripts
-          args = {nfs_ip: '117.121.25.7', target: '/media/cdrom'}
+          args = {nfs_ip: '10.50.23.82', target: '/media/cdrom'}
 
           ['apt-get update -q',
            'apt-get install git libssl-dev nfs-common portmap -q -y',

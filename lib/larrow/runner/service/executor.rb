@@ -18,7 +18,7 @@ module Larrow
 
         def execute cmd, base_dir:nil, cannt_fail: true
           @connection.open_channel do |ch|
-            RunLogger.level(2).color('magenta').info "# #{cmd}"
+            RunLogger.level(1).detail "# #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
               if Option.key? :debug
@@ -27,7 +27,7 @@ module Larrow
                     yield data
                   else
                     data.split(/\r?\n/).each do |msg|
-                      RunLogger.level(2).info data
+                      RunLogger.level(1).info msg
                     end
                   end
                 end
@@ -36,7 +36,7 @@ module Larrow
                     yield data
                   else
                     data.split(/\r?\n/).each do |msg|
-                      RunLogger.level(2).info data
+                      RunLogger.level(1).info msg
                     end
                   end
                 end
@@ -44,7 +44,7 @@ module Larrow
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
                 if Option.key? :debug
-                  RunLogger.level(2).color('green').info "exit #{status}"
+                  RunLogger.level(1).info "exit #{status}"
                   fail ExecutionError,cmd if status != 0
                 end
               end
