@@ -36,7 +36,7 @@ module Larrow
         def base_scripts
           args = {nfs_ip: '117.121.25.7', target: '/media/cdrom'}
 
-          ['apt-get update',
+          ['apt-get update -q',
            'apt-get install git libssl-dev nfs-common portmap -q -y',
            'echo blacklist rpcsec_gss_krb5 > /etc/modprobe.d/larrow-blacklist.conf',
            'mount %{nfs_ip}:/opt %{target}',
