@@ -22,7 +22,7 @@ module Larrow
               node.execute script
             end
             during = sprintf('%.2f',Time.new - begin_at)
-            RunLogger.level(1).detail "#{a_step} complete (#{during}s)"
+            RunLogger.level(1).detail "#{a_step.title} complete (#{during}s)"
           end
         end
       end
