@@ -24,7 +24,7 @@ module Larrow::Runner
     end
 
     def info msg
-      indent = "\t" * (@level || 0)
+      indent = "  " * (@level || 0)
       wrapped = wrap_color msg
       @inner_logger.info "#{indent}#{wrapped}"
     end
