@@ -18,6 +18,7 @@ module Larrow
         
         after do
           `rm -rf essh`
+          `rm -rf $HOME/source`
         end
       end
     end

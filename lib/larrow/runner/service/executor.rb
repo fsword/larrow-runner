@@ -13,40 +13,40 @@ module Larrow
           self.password = password
           @connection = Net::SSH.start(ip,user)
           @canceling = nil
-          if Option[:debug]
-            @logger = Logger
-          else
-            @logger = ::Logger.new "#{ip}_cmd.log"
-          end
+          @dlogger = ::Logger.new "#{ip}_cmd.log"
         end
 
         def execute cmd, base_dir:nil, cannt_fail: true
           @connection.open_channel do |ch|
-            if Option[:debug]
-              info "\tcmd: #{cmd}"
-            else
-              Logger.info "\tcmd: #{cmd}"
-            end
+            RunLogger.level(1).detail "# #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
-              ch.on_data do |c, data|
-                if block_given?
-                  yield data
-                else
-                 info "\t\t #{data}"
+              if Option.key? :debug
+                ch.on_data do |c, data|
+                  if block_given?
+                    yield data
+                  else
+                    data.split(/\r?\n/).each do |msg|
+                      RunLogger.level(1).info msg
+                    end
+                  end
                 end
-              end
-              ch.on_extended_data do |c, type, data|
-                if block_given?
-                  yield data
-                else
-                 info "\t\t #{data}",:warn
+                ch.on_extended_data do |c, type, data|
+                  if block_given?
+                    yield data
+                  else
+                    data.split(/\r?\n/).each do |msg|
+                      RunLogger.level(1).info msg
+                    end
+                  end
                 end
               end
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
-                info "\t\texit status: #{status}"
-                fail ExecutionError,cmd if status != 0
+                if Option.key? :debug
+                  RunLogger.level(1).info "exit #{status}"
+                  fail ExecutionError,cmd if status != 0
+                end
               end
             end
           end
@@ -60,13 +60,6 @@ module Larrow
           raise 'not completed.'
         end
 
-        def info msg, decorator=:detail
-          if Option[:debug]
-            @logger.info msg.send decorator
-          else
-            @logger.info msg
-          end
-        end
       end
     end
   end
