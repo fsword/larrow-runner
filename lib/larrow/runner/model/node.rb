@@ -19,8 +19,8 @@ module Larrow
         end
 
         def destroy
-          instance.destroy
-          eip.destroy
+          instance.destroy.force
+          eip.destroy.force
           self
         end
       end
