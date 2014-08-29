@@ -4,24 +4,23 @@ require 'larrow/runner/config'
 module Larrow
   module Runner
     module Service
-      class Vm
+      class Cloud
         def initialize
-          access_id  = Config.vm[:qy_access_key_id]
-          secret_key = Config.vm[:qy_secret_access_key]
-          zone_id    = Config.vm[:zone_id] || 'pek1'
+          access_id   = Config.qingcloud[:qy_access_key_id]
+          secret_key  = Config.qingcloud[:qy_secret_access_key]
+          zone_id     = Config.qingcloud[:zone_id] || 'pek1'
+          @keypair_id = Config.qingcloud[:keypair_id]
           Qingcloud.establish_connection access_id,secret_key,zone_id
         end
 
-        def create count=1
-          image_id = 'trustysrvx64a'
-          RunLogger.level(1).detail "create VM nodes"
+        def create count=1,image_id:'trustysrvx64a'
+          RunLogger.level(1).detail "assign node"
           instances = Qingcloud::Instance.create(image_id,
                                                  count:count,
                                                  login_mode:'keypair',
-                                                 keypair_id: 'kp-t82jrcvw'
+                                                 keypair_id: @keypair_id
                                                 )
 
-          RunLogger.level(1).detail "ask for IPs"
           eips = Qingcloud::Eip.create(count:count)
           
           count.times do |i|
@@ -29,7 +28,12 @@ module Larrow
             eips[i] = eips[i].associate instances[i].id
           end
           # eips contains promise object, so it should be force
-          (0...count).map{ |i| [instances[i], eips[i].force]}
+          (0...count).map{ |i| [instances[i], eips[i]]}
+        end
+
+        # return image future
+        def create_image instance_id
+          Qingcloud::Image.create instance_id
         end
       end
     end

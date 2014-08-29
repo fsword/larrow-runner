@@ -1,10 +1,10 @@
 module Larrow
   module Runner
     module Service
-      autoload :Vm, 'larrow/runner/service/vm'
+      autoload :Cloud,    'larrow/runner/service/cloud'
       autoload :Executor, 'larrow/runner/service/executor'
-      def vm
-        @vm ||= Vm.new
+      def cloud
+        @cloud ||= Cloud.new
       end
     end
   end

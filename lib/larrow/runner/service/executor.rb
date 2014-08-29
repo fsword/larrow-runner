@@ -13,7 +13,7 @@ module Larrow
           self.password = password
           @connection = Net::SSH.start(ip,user)
           @canceling = nil
-          @dlogger = ::Logger.new "#{ip}_cmd.log"
+          @dlogger = RunLogger #::Logger.new "#{ip}_cmd.log"
         end
 
         def execute cmd, base_dir:nil, cannt_fail: true

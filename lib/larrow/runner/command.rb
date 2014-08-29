@@ -1,4 +1,6 @@
 require 'thor'
+require 'yaml'
+
 module Larrow
   module Runner
     class Build < ::Thor
@@ -7,9 +9,12 @@ module Larrow
         puts "build server by #{url}"
       end
      
-      desc 'image <target_url>','setup environment and cache it as a image'
-      def image url
-        puts "build image by #{url}"
+      desc 'image <LarrowFile>','setup environment and cache it as a image'
+      def image file_path
+        RunLogger.title '[Read larrow file]'
+        config = YAML.load(File.read file_path).with_indifferent_access
+        RunLogger.level(1).detail "loaded from #{file_path}"
+        ImageBuilder.from(config[:from]).run(config[:run]).build
       end
     end
 

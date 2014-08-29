@@ -18,6 +18,10 @@ module Larrow
           @executor.execute command, base_dir: base_dir, &block
         end
 
+        def stop
+          self.instance = instance.stop
+        end
+
         def destroy
           instance.destroy.force
           eip.destroy.force
