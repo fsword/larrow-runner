@@ -14,7 +14,15 @@ module Larrow
         RunLogger.title '[Read larrow file]'
         config = YAML.load(File.read file_path).with_indifferent_access
         RunLogger.level(1).detail "loaded from #{file_path}"
-        ImageBuilder.from(config[:from]).run(config[:run]).build
+        if ImageBuilder.check config[:image_id]
+          RunLogger.level(1).detail 'image has already be created.'
+          return
+        end
+
+        image_id = ImageBuilder.from(config[:from]).run(config[:run]).build
+        config[:image_id] = image_id
+        RunLogger.title '[write image id to larrow file]'
+        File.open(file_path, 'w'){|f| f.write(YAML.dump config) }
       end
     end
 

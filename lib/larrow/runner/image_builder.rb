@@ -4,12 +4,18 @@ require 'larrow/runner/model/node'
 module Larrow
   module Runner
     class ImageBuilder
+      # instance and class can use the service's methods
       include Service
+      extend Service 
 
       attr_accessor :base_image
       attr_accessor :runs
       def self.from base_image
         new(base_image)
+      end
+
+      def self.check image_id
+        image_id and cloud.image? image_id
       end
 
       def initialize base_image
@@ -41,7 +47,7 @@ module Larrow
 
         RunLogger.title '[Cleanup]'
         node.destroy
-
+        new_image.id
       end
     end
   end

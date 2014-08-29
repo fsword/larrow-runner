@@ -35,6 +35,10 @@ module Larrow
         def create_image instance_id
           Qingcloud::Image.create instance_id
         end
+
+        def image? image_id
+          Qingcloud::Image.list(:self, ids: [image_id]).size == 1
+        end
       end
     end
   end
