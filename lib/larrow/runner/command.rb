@@ -21,8 +21,8 @@ module Larrow
 
         image_id = ImageBuilder.from(config[:from]).run(config[:run]).build
         config[:image_id] = image_id
-        RunLogger.title '[write image id to larrow file]'
-        File.open(file_path, 'w'){|f| f.write(YAML.dump config) }
+        RunLogger.title '[Write image id]'
+        File.open(file_path, 'w'){|f| f.write(YAML.dump config.to_hash) }
       end
     end
 
