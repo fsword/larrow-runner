@@ -33,6 +33,7 @@ module Larrow
       desc 'config','show all configuration'
       def config
         Config.generate
+        puts YAML.dump Config.all.to_hash
       end
 
       desc 'version','show version of larrow-runner'
