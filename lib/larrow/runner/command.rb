@@ -12,17 +12,20 @@ module Larrow
       desc 'image <LarrowFile>','setup environment and cache it as a image'
       def image file_path
         RunLogger.title '[Read larrow file]'
-        config = YAML.load(File.read file_path).with_indifferent_access
+        content = File.read file_path
+        config = YAML.load(content).with_indifferent_access
         RunLogger.level(1).detail "loaded from #{file_path}"
         if ImageBuilder.check config[:image_id]
           RunLogger.level(1).detail 'image has already be created.'
           return
         end
-
         image_id = ImageBuilder.from(config[:from]).run(config[:run]).build
-        config[:image_id] = image_id
         RunLogger.title '[Write image id]'
-        File.open(file_path, 'w'){|f| f.write(YAML.dump config.to_hash) }
+        # remove old image_id entry
+        content = content.split(/\n/).select{|s| s =~ /^image_id: /}.join("\n")
+        # add image_id entry
+        content.gsub!(/\r?\n$/,'') << "\nimage_id: #{image_id}\n"
+        File.write file_path, content
       end
     end
 
