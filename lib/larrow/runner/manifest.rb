@@ -28,9 +28,30 @@ module Larrow
           return nil if content.nil?
 
           self.configuration = Configuration.new
+          add_base_scripts
           parse(content)
         end
 
+        def add_base_scripts
+          lines = <<-EOF
+#{package_update}
+#{bashrc_cleanup}
+#{source_accessor.source_sync_script}
+          EOF
+          scripts = lines.split(/\n/).map{|s| Script.new s}
+          configuration.put_to_step :init, scripts
+        end
+
+        def package_update
+          <<-EOF
+apt-get update -qq
+apt-get install git libssl-dev build-essential curl libncurses5-dev -y -qq
+          EOF
+        end
+
+        def bashrc_cleanup
+          "sed '/$PS1/ d' -i /root/.bashrc"
+        end
       end
     end
   end

@@ -40,8 +40,6 @@ module Larrow
                      end rescue '17'
           install_dir = sprintf(TEMPLATE_PATH,revision.downcase)
           lines = <<-EOF
-apt-get update -qq
-apt-get install git libssl-dev build-essential curl libncurses5-dev -y -qq
 echo '-s' >> .curlrc
 curl https://raw.githubusercontent.com/spawngrid/kerl/master/kerl -o /usr/local/bin/kerl
 chmod a+x /usr/local/bin/kerl
