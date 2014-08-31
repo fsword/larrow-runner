@@ -10,7 +10,7 @@ module Larrow
       attr_accessor :app
       def initialize target_url
         signal_trap
-        self.vcs = Vcs.parse target_url
+        self.vcs = Vcs.detect target_url
       end
 
       def signal_trap
