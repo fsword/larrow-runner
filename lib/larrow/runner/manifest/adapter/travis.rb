@@ -31,23 +31,24 @@ module Larrow
         end
       end
       class Erlang
-        TEMPLATE_PATH='/opt/install/erlang/%s/activate'
+        TEMPLATE_PATH='/opt/install/erlang/%s'
         def self.fulfill data, configuration
           revision = case data[:otp_release].last
                        when /R15/ then 'R15B03-1'
                        when /R16/ then 'R16B03-1'
                        when /17/  then '17.1'
                      end rescue '17'
-          activate_path = sprintf(TEMPLATE_PATH,revision.downcase)
+          install_dir = sprintf(TEMPLATE_PATH,revision.downcase)
           lines = <<-EOF
 apt-get update -qq
-apt-get install git libssl-dev build-essential curl libncurses5-dev -q -y
+apt-get install git libssl-dev build-essential curl libncurses5-dev -y -qq
+echo '-s' >> .curlrc
 curl https://raw.githubusercontent.com/spawngrid/kerl/master/kerl -o /usr/local/bin/kerl
 chmod a+x /usr/local/bin/kerl
 kerl update releases
-kerl build #{revision} #{revision.downcase}
-kerl install #{revision.downcase} #{activate_path}
-echo 'source #{activate_path}' >> $HOME/.bashrc
+kerl build #{revision} #{revision}
+kerl install #{revision} #{install_dir}
+echo 'source #{install_dir}/activate' >> $HOME/.bashrc
           EOF
           lines.split(/\n/).each do |line|
             s = Script.new line
