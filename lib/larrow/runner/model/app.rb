@@ -3,9 +3,10 @@ module Larrow
     module Model
       class App
         attr_accessor :vcs, :node, :configuration
-        def initialize vcs
+        def initialize vcs, attributes={}
           self.vcs = vcs
           self.configuration = vcs.load_configuration
+          self.assign attributes unless attributes.empty?
         end
 
         def assign arg

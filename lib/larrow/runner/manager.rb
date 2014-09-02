@@ -39,8 +39,8 @@ module Larrow
       def allocate
         RunLogger.title 'allocate resource'
         begin_at = Time.new
-        self.app = Model::App.new vcs
-        self.app.assign node: Model::Node.new(*cloud.create.first)
+        node = Model::Node.new(*cloud.create.first)
+        self.app = Model::App.new vcs, node: node
         during = sprintf('%.2f', Time.new - begin_at)
         RunLogger.level(1).detail "allocated(#{during}s)"
       end
