@@ -1,4 +1,4 @@
-module Larrow::Runner::Command
+module Larrow::Runner::Cli
   class BuildCommand < ::Thor
     desc 'server <target_url>','setup the server environment'
     def server url

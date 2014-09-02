@@ -1,5 +1,5 @@
 require 'yaml'
-module Larrow::Runner::Command
+module Larrow::Runner::Cli
   class ConfigCommand < ::Thor
     include Larrow::Runner
 
