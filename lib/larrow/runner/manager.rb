@@ -9,9 +9,8 @@ module Larrow
       attr_accessor :vcs
       attr_accessor :app
       def initialize target_url
-        @state = :init
         signal_trap
-        self.vcs = Vcs.parse target_url
+        self.vcs = Vcs.detect target_url
       end
 
       def signal_trap
@@ -35,17 +34,15 @@ module Larrow
       def preload
         RunLogger.title 'load configuration'
         self.vcs.load_configuration
-        @state = :preload
       end
 
       def allocate
         RunLogger.title 'allocate resource'
         begin_at = Time.new
-        self.app = Model::App.new vcs
-        self.app.assign node: Model::Node.new(*vm.create.first)
+        node = Model::Node.new(*cloud.create.first)
+        self.app = Model::App.new vcs, node: node
         during = sprintf('%.2f', Time.new - begin_at)
         RunLogger.level(1).detail "allocated(#{during}s)"
-        @state = :allocate
       end
 
       def release
@@ -56,7 +53,6 @@ module Larrow
         end
         during = sprintf('%.2f', Time.new - begin_at)
         RunLogger.level(1).detail "released(#{during}s)"
-        @state = :release
       end
     end
   end

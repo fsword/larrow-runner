@@ -28,29 +28,32 @@ module Larrow
           return nil if content.nil?
 
           self.configuration = Configuration.new
-          configuration.put_to_step :init, base_scripts
-          
+          add_base_scripts
           parse(content)
         end
 
-        def base_scripts
-          args = {nfs_ip: '10.50.23.82', target: '/media/cdrom'}
+        def add_base_scripts
+          lines = <<-EOF
+#{package_update}
+#{bashrc_cleanup}
+          EOF
+          scripts = lines.split(/\n/).map{|s| Script.new s}
+          configuration.put_to_step :init, scripts
+          configuration.put_to_step :prepare, Script.new(
+            source_accessor.source_sync_script
+          )
+        end
 
-          ['apt-get update -qq',
-           'apt-get install git libssl-dev nfs-common portmap -q -y',
-           'echo blacklist rpcsec_gss_krb5 > /etc/modprobe.d/larrow-blacklist.conf',
-           'mount %{nfs_ip}:/opt %{target}',
-           'cp -a %{target}/base/usr/local/rvm /usr/local/rvm',
-           'cp -a %{target}/base/usr/local/bin/* /usr/local/bin/',
-           'cp -a %{target}/base/profile.d/* /etc/profile.d/',
-           "sed '6 d' -i /root/.bashrc", # allow non-interactive run
-#           "echo 'source /etc/profile.d/rvm.sh' >> $HOME/.bashrc",
-           'cp -a %{target}/base/home/.kerl $HOME/',
-           'ln -s %{target}/install /opt/install',
-           source_accessor.source_sync_script
-          ].map do |s|
-            Script.new s, args: args
-          end
+        def package_update
+          <<-EOF
+apt-get update -qq
+apt-get install git libssl-dev build-essential curl libncurses5-dev -y -qq
+          EOF
+        end
+
+        # remove PS1 check, for user to make ssh connection without tty
+        def bashrc_cleanup
+          "sed '/$PS1/ d' -i /root/.bashrc"
         end
       end
     end
