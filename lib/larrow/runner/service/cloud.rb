@@ -26,12 +26,11 @@ module Larrow
 
           eips = Eip.create(count:count)
           
-          count.times do |i|
+          (0...count).map do |i|
             RunLogger.level(1).detail "bind ip: #{eips[i].address}"
             eips[i] = eips[i].associate instances[i].id
+            [ instances[i], eips[i] ]
           end
-          # eips contains promise object, so it should be force
-          (0...count).map{ |i| [instances[i], eips[i]]}
         end
 
         # return image future
