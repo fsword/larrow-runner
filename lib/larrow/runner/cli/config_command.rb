@@ -14,5 +14,12 @@ module Larrow::Runner::Cli
     def show
       puts YAML.dump Config.all.to_hash
     end
+
+    desc 'transfer','dump configuration'
+    def transfer url
+      vcs = Vcs.detect url
+      configuration = vcs.load_configuration
+      puts configuration.dump
+    end
   end
 end

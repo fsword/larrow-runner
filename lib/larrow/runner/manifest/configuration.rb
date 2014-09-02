@@ -33,6 +33,15 @@ module Larrow
             yield steps[title] if steps[title]
           end
         end
+
+        def dump
+          data = DEFINED_STEPS.reduce({}) do |sum,title|
+            next sum if steps[title].nil?
+            scripts_data = steps[title].scripts.map(&:dump).compact
+            sum.update title.to_s => scripts_data
+          end
+          YAML.dump data
+        end
       end
 
       # Describe a set of scripts to accomplish a specific goal
@@ -57,6 +66,11 @@ module Larrow
 
         def actual_command
           sprintf(cmd, args)
+        end
+
+        def dump
+          return nil if cmd.empty?
+          cmd
         end
       end
     end
