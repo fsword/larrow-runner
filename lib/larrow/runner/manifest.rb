@@ -36,10 +36,12 @@ module Larrow
           lines = <<-EOF
 #{package_update}
 #{bashrc_cleanup}
-#{source_accessor.source_sync_script}
           EOF
           scripts = lines.split(/\n/).map{|s| Script.new s}
           configuration.put_to_step :init, scripts
+          configuration.put_to_step :prepare, Script.new(
+            source_accessor.source_sync_script
+          )
         end
 
         def package_update
@@ -49,6 +51,7 @@ apt-get install git libssl-dev build-essential curl libncurses5-dev -y -qq
           EOF
         end
 
+        # remove PS1 check, for user to make ssh connection without tty
         def bashrc_cleanup
           "sed '/$PS1/ d' -i /root/.bashrc"
         end
