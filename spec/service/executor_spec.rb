@@ -3,7 +3,7 @@ module Larrow::Runner::Service
   describe Executor do
     subject{ Executor.new 'localhost', `whoami`.chomp, 22, nil }
     before do 
-      Larrow::Runner::Option[:debug] = nil
+      Larrow::Runner::RunOption[:debug] = nil
     end
     it 'normal command run'do
       outputs = ''

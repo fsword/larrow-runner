@@ -20,7 +20,7 @@ module Larrow
             RunLogger.level(1).detail "# #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             ch.exec cmd do |ch,success|
-              if Option.key? :debug
+              if RunOption.key? :debug
                 ch.on_data do |c, data|
                   if block_given?
                     yield data
@@ -42,7 +42,7 @@ module Larrow
               end
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
-                if Option.key? :debug
+                if RunOption.key? :debug
                   RunLogger.level(1).info "exit #{status}"
                   fail ExecutionError,cmd if status != 0
                 end

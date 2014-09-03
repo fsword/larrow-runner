@@ -13,11 +13,11 @@ module Larrow
                 else
                   Logger.new $stdout
                 end
-    Option = {}.with_indifferent_access
+    RunOption = {}.with_indifferent_access
   end
 end
 
-require 'larrow/runner/config'
+require 'larrow/runner/option'
 require 'larrow/runner/errors'
 require 'larrow/runner/vcs'
 require 'larrow/runner/manifest'

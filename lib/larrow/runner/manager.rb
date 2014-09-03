@@ -26,7 +26,7 @@ module Larrow
         allocate
         app.action
       rescue Exception
-        binding.pry if Option.key? :debug
+        binding.pry if RunOption.key? :debug
       ensure
         release
       end
