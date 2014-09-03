@@ -1,7 +1,7 @@
 module Larrow
   module Runner
     module Manifest
-      class Travis
+      class Larrow < Base
         CONFIG_FILE='/.larrow.yml'
 
         # TODO manifest validation

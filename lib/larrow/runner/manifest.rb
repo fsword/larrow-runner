@@ -6,10 +6,12 @@ module Larrow
       # There isn't Adapter module, these classes are under Manifest module.
       autoload :Configuration, 'larrow/runner/manifest/configuration'
       autoload :Travis, 'larrow/runner/manifest/adapter/travis'
+      autoload :Larrow, 'larrow/runner/manifest/adapter/larrow'
+      autoload :Blank, 'larrow/runner/manifest/adapter/blank'
 
       def self.load_configuration source_accessor
         @configuration ||= begin
-                             [ Travis, Larrow ].each do |clazz|
+                             [ Travis, Larrow, Blank ].each do |clazz|
                                configuration = 
                                  clazz.new(source_accessor).load
                                break configuration if configuration
@@ -18,7 +20,7 @@ module Larrow
       end
 
       class Base
-        attr_accessor :source_accessor
+        attr_accessor :source_accessor,:configuration
         def initialize source_accessor
           self.source_accessor = source_accessor
         end
@@ -30,6 +32,7 @@ module Larrow
           self.configuration = Configuration.new
           add_base_scripts
           parse(content)
+          configuration
         end
 
         def add_base_scripts
@@ -59,4 +62,3 @@ apt-get install git libssl-dev build-essential curl libncurses5-dev -y -qq
     end
   end
 end
-require 'larrow/runner/manifest/configuration'

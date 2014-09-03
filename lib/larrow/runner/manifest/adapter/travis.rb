@@ -5,14 +5,13 @@ module Larrow
     module Manifest
       class Travis < Base
         CONFIG_FILE='/.travis.yml'
-        attr_accessor :data, :configuration
+        attr_accessor :data
        
         def parse content
           self.data  = YAML.load(content).with_indifferent_access
           build_language
           map_step :prepare,         :before_script
           map_step :functional_test, :script
-          configuration
         end
        
         def map_step title, travis_title
