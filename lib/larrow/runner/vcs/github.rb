@@ -27,7 +27,15 @@ module Larrow
 
         def get filename
           url = URL_TEMPLATE % [organize, name, branch, filename]
-          Faraday.get(url).body
+          resp = Faraday.get(url)
+          case resp.status
+          when 200
+            resp.body
+          when 404
+            nil
+          else
+            raise resp.body
+          end
         end
 
         def source_sync_script
