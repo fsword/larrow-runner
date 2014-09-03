@@ -1,11 +1,16 @@
 module Larrow::Runner::Cli
-  class BuildCommand < ::Thor
+  class Build < ::Thor
     desc 'server <target_url>','setup the server environment'
     def server url
       puts "build server by #{url}"
     end
 
     desc 'image <LarrowFile>','setup environment and cache it as a image'
+    long_desc <<-EOF
+Reduce the time is very important for CI or other develop activity.  
+There is a best practise to build a image as base system for the project.  
+Larrow will help you to make it simple and reuse the configuration items
+    EOF
     def image file_path
       RunLogger.title '[Read larrow file]'
       content = File.read file_path

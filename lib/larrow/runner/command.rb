@@ -1,6 +1,6 @@
 require 'thor'
-require 'larrow/runner/cli/build_command'
-require 'larrow/runner/cli/config_command'
+require 'larrow/runner/cli/build'
+require 'larrow/runner/cli/config'
 
 module Larrow
   module Runner
@@ -22,11 +22,11 @@ EOF
         Manager.new(url).go
       end
      
-      desc 'build SUBCOMMAND', 'build your server or images'
-      subcommand 'build', Cli::BuildCommand
+      desc 'build [SUBCOMMAND]', 'build your server or images'
+      subcommand 'build', Cli::Build
       
-      desc 'config SUBCOMMAND', 'generate/use config'
-      subcommand 'config', Cli::ConfigCommand
+      desc 'config [SUBCOMMAND]', 'generate/use config'
+      subcommand 'config', Cli::Config
     end
 
   end
