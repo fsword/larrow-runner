@@ -1,5 +1,4 @@
 require 'larrow/qingcloud'
-require 'larrow/runner/config'
 
 module Larrow
   module Runner

@@ -29,7 +29,7 @@ module Larrow::Runner
 
     def preload
       RunLogger.title 'load configuration'
-      self.vcs.load_configuration
+      self.vcs.configuration
     end
 
     def allocate

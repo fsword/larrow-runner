@@ -19,6 +19,13 @@ module Larrow::Runner::Manifest
     def put_to_step title, *scripts
       steps[title] ||= Step.new(nil, title)
       steps[title].scripts += scripts.flatten
+      self
+    end
+
+    def insert_to_step title, *scripts
+      steps[title] ||= Step.new(nil, title)
+      steps[title].scripts.unshift *scripts.flatten
+      self
     end
 
     def each_step skip_test

@@ -1,9 +1,10 @@
 module Larrow::Runner::Model
   class App
+    include Larrow::Runner
     attr_accessor :vcs, :node, :configuration
     def initialize vcs, attributes={}
       self.vcs = vcs
-      self.configuration = vcs.load_configuration
+      self.configuration = vcs.configuration
       self.assign attributes unless attributes.empty?
     end
 

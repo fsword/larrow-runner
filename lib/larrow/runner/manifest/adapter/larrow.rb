@@ -1,5 +1,5 @@
 module Larrow::Runner::Manifest
-  class Larrow < Base
+  class Larrow < BaseLoader
     CONFIG_FILE='/.larrow.yml'
 
     # TODO manifest validation
