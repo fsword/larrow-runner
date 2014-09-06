@@ -29,7 +29,7 @@ module Larrow::Runner
     end
 
     def color color
-      return self if Option.key? :nocolor # skip color when no color
+      return self if RunOption.key? :nocolor # skip color when no color
       Logger.new @inner_logger, level: @level, color: color
     end
 

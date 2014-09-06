@@ -1,59 +1,48 @@
+require 'larrow/runner/manifest/base_loader'
+require 'larrow/runner/manifest/configuration'
+
 module Larrow
   module Runner
     # support multiple manifest style, such as travis, larrow, etc...
     module Manifest
       # Adapters is a set of class to adapt different manifest style.
       # There isn't Adapter module, these classes are under Manifest module.
-      autoload :Configuration, 'larrow/runner/manifest/configuration'
       autoload :Travis, 'larrow/runner/manifest/adapter/travis'
+      autoload :Larrow, 'larrow/runner/manifest/adapter/larrow'
+      autoload :Blank, 'larrow/runner/manifest/adapter/blank'
 
-      def self.load_configuration source_accessor
-        @configuration ||= begin
-                             [ Travis, Larrow ].each do |clazz|
-                               configuration = 
-                                 clazz.new(source_accessor).load
-                               break configuration if configuration
-                             end
-                           end
+      extend self
+
+      def configuration source_accessor
+        [ Travis, Larrow, Blank ].each do |clazz|
+          configuration = clazz.new(source_accessor).load
+          return configuration if configuration
+        end
       end
 
-      class Base
-        attr_accessor :source_accessor
-        def initialize source_accessor
-          self.source_accessor = source_accessor
-        end
+      def add_base_scripts configuration,source_accessor
+        lines = <<-EOF
+#{package_update}
+#{bashrc_cleanup}
+        EOF
+        scripts = lines.split(/\n/).map{|s| Script.new s}
+        configuration.insert_to_step :init, scripts
+        configuration.insert_to_step :prepare, Script.new(
+          source_accessor.source_sync_script
+        )
+      end
 
-        def load
-          content = source_accessor.get self.class.const_get 'CONFIG_FILE'
-          return nil if content.nil?
+      def package_update
+        <<-EOF
+apt-get update -qq
+apt-get install git libssl-dev build-essential curl libncurses5-dev -y -qq
+        EOF
+      end
 
-          self.configuration = Configuration.new
-          configuration.put_to_step :init, base_scripts
-          
-          parse(content)
-        end
-
-        def base_scripts
-          args = {nfs_ip: '10.50.23.82', target: '/media/cdrom'}
-
-          ['apt-get update -qq',
-           'apt-get install git libssl-dev nfs-common portmap -q -y',
-           'echo blacklist rpcsec_gss_krb5 > /etc/modprobe.d/larrow-blacklist.conf',
-           'mount %{nfs_ip}:/opt %{target}',
-           'cp -a %{target}/base/usr/local/rvm /usr/local/rvm',
-           'cp -a %{target}/base/usr/local/bin/* /usr/local/bin/',
-           'cp -a %{target}/base/profile.d/* /etc/profile.d/',
-           "sed '6 d' -i /root/.bashrc", # allow non-interactive run
-#           "echo 'source /etc/profile.d/rvm.sh' >> $HOME/.bashrc",
-           'cp -a %{target}/base/home/.kerl $HOME/',
-           'ln -s %{target}/install /opt/install',
-           source_accessor.source_sync_script
-          ].map do |s|
-            Script.new s, args: args
-          end
-        end
+      # remove PS1 check, for user to make ssh connection without tty
+      def bashrc_cleanup
+        "sed '/$PS1/ d' -i /root/.bashrc"
       end
     end
   end
 end
-require 'larrow/runner/manifest/configuration'
