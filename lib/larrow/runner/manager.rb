@@ -48,7 +48,7 @@ module Larrow::Runner
     def release
       RunLogger.title 'release resource'
       begin_at = Time.new
-      if app.node
+      if app && app.node
         app.node.destroy if @state != :release
       end
       during = sprintf('%.2f', Time.new - begin_at)
