@@ -13,8 +13,8 @@ module Larrow
           end
         end
 
-        it { expect(subject.get '/.travis').not_to be_empty }
-        it { expect(system subject.source_sync_script).to be true }
+        it { expect(subject.get '/.travis.yml').not_to be_empty }
+        it { expect(subject.source_sync_script).not_to be_empty }
         
         after do
           `rm -rf essh`

@@ -1,5 +1,4 @@
 require 'larrow/qingcloud'
-require 'larrow/runner/config'
 
 module Larrow
   module Runner
@@ -7,10 +6,10 @@ module Larrow
       class Cloud
         include Qingcloud
         def initialize
-          access_id   = Config.qingcloud[:qy_access_key_id]
-          secret_key  = Config.qingcloud[:qy_secret_access_key]
-          zone_id     = Config.qingcloud[:zone_id] || 'pek1'
-          @keypair_id = Config.qingcloud[:keypair_id]
+          access_id   = Option.qingcloud[:qy_access_key_id]
+          secret_key  = Option.qingcloud[:qy_secret_access_key]
+          zone_id     = Option.qingcloud[:zone_id] || 'pek1'
+          @keypair_id = Option.qingcloud[:keypair_id]
           Qingcloud.establish_connection access_id,secret_key,zone_id
         end
 

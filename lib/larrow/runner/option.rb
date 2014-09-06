@@ -1,7 +1,7 @@
 require 'yaml'
 module Larrow
   module Runner
-    module Config
+    module Option
       extend self
 
       FILE = "#{ENV['HOME']}/.larrow"

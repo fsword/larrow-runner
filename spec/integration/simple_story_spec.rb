@@ -8,9 +8,6 @@ module Larrow
         describe url do
           subject{ Manager.new url }
 
-          after :each do
-            subject.release
-          end
           it{ expect(subject.go).not_to be_nil }
         end
       end
