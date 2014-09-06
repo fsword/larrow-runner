@@ -30,8 +30,8 @@ module Larrow
           return nil if content.nil?
 
           self.configuration = Configuration.new
-          add_base_scripts
           parse(content)
+          add_base_scripts
           configuration
         end
 
