@@ -1,5 +1,6 @@
 module Larrow::Runner::Model
   class Node
+    include Larrow::Runner::Service
     attr_accessor :instance, :eip
     attr_accessor :user,:host
     def initialize instance, eip, user='root'
@@ -7,7 +8,7 @@ module Larrow::Runner::Model
       self.eip = eip
       self.host = eip.address
       self.user = user
-      @executor = Service::Executor.new host, user, nil, nil
+      @executor = Executor.new host, user, nil, nil
     end
 
     def execute script, &block
