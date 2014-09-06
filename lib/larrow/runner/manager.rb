@@ -21,8 +21,12 @@ module Larrow::Runner
       preload
       allocate
       app.action
-    rescue Exception
-      binding.pry if RunOption.key? :debug
+    rescue => e
+      if RunOption.key? :debug
+        binding.pry
+      else
+        raise e
+      end
     ensure
       release
     end
