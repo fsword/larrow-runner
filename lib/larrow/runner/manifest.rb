@@ -26,8 +26,8 @@ module Larrow
 #{bashrc_cleanup}
         EOF
         scripts = lines.split(/\n/).map{|s| Script.new s}
-        configuration.put_to_step :init, scripts
-        configuration.put_to_step :prepare, Script.new(
+        configuration.insert_to_step :init, scripts
+        configuration.insert_to_step :prepare, Script.new(
           source_accessor.source_sync_script
         )
       end
