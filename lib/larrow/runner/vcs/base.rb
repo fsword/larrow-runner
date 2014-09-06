@@ -1,7 +1,13 @@
 module Larrow::Runner::Vcs
   class Base
-    def load_configuration
-      Manifest.load_configuration(self)
+    include Larrow::Runner
+    def configuration merge=true
+      configuration = Manifest.configuration(self)
+      if merge
+        Manifest.add_base_scripts configuration,self
+      else
+        configuration
+      end
     end
 
     def formatted_url

@@ -18,7 +18,7 @@ module Larrow::Runner::Cli
     desc 'transfer [URL]','dump configuration of the project'
     def transfer url
       vcs = Vcs.detect url
-      configuration = vcs.load_configuration
+      configuration = vcs.configuration false
       puts configuration.dump
     end
   end

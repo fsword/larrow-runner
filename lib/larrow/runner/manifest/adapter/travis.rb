@@ -1,7 +1,7 @@
 require 'yaml'
 
 module Larrow::Runner::Manifest
-  class Travis < Base
+  class Travis < BaseLoader
     CONFIG_FILE='/.travis.yml'
     attr_accessor :data
 

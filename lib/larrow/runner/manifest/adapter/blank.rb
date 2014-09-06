@@ -1,9 +1,7 @@
 module Larrow::Runner::Manifest
-  class Blank < Base
+  class Blank < BaseLoader
     def load
       self.configuration = Configuration.new
-      add_base_scripts
-      configuration
     end
   end
 end
