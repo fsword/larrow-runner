@@ -1,18 +1,36 @@
 module Larrow::Runner::Cli
   class Build < ::Thor
+    include Larrow::Runner
     desc 'server <target_url>','setup the server environment'
+    option :debug
+    option :nocolor
     def server url
-      puts "build server by #{url}"
+      RunOption.update options
+      RunOption[:keep] = true
+      RunLogger.nocolor if RunOption.key? :nocolor
+      Manager.new(url).build_server
     end
 
-    desc 'image <LarrowFile>','setup environment and cache it as a image'
+    desc 'image <target_url>', 'build a base image for the project'
     long_desc <<-EOF
 Reduce the time is very important for CI or other develop activity.  
 There is a best practise to build a image as base system for the project.  
 Larrow will help you to make it simple and reuse the configuration items
     EOF
-    def image file_path
-      RunLogger.title '[Read larrow file]'
+    option :debug
+    option :nocolor
+    def image url
+      RunOption.update options
+      RunLogger.nocolor if RunOption.key? :nocolor
+      Manager.new(url).build_image
+    end
+
+    desc 'on <LarrowFile>','build a image according to a file'
+    long_desc <<-EOF
+Like DockerFile, LarrowFile can help you to make it simple to build a base image'
+    EOF
+    def on file_path
+      RunLogger.title '[Read LarrowFile]'
       content = File.read file_path
       config = YAML.load(content).with_indifferent_access
       RunLogger.level(1).detail "loaded from #{file_path}"

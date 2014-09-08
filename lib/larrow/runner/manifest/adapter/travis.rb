@@ -51,5 +51,22 @@ echo 'source #{install_dir}/activate' >> $HOME/.bashrc
       end
     end
   end
+  
+  class Ruby
+    def self.fulfill data, configuration
+      return unless data[:rvm] # only rvm is supported for ruby
+      version = data[:rvm].last
+      lines = <<-EOF
+echo '-s' >> .curlrc
+curl -sSL https://get.rvm.io | bash -s stable
+echo 'source /etc/profile.d/rvm.sh' >> .bashrc
+rvm install #{version}
+      EOF
+      lines.split(/\n/).each do |line|
+        s = Script.new line
+        configuration.put_to_step :init, s
+      end
+    end
+  end
 end
 
