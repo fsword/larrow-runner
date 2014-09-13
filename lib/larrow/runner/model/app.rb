@@ -41,11 +41,13 @@ module Larrow::Runner::Model
       node.stop
       new_image = cloud.create_image node.instance.id
       RunLogger.level(1).detail "New Image Id: #{new_image.id}"
+      new_image
     end
 
     def deploy
       action :deploy
       RunLogger.level(1).detail "application is deploy on: #{node.host}"
+      node
     end
 
   end
