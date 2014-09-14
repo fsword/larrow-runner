@@ -24,6 +24,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry", '~> 0.10'
   spec.add_development_dependency "pry-nav", '~> 0.2'
   spec.add_development_dependency "simplecov", '~> 0.9'
+  spec.add_development_dependency "parallel_tests"
 
   spec.add_runtime_dependency 'tilt', '~> 2'
   spec.add_runtime_dependency 'thor', '~> 0.19'
