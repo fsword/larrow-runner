@@ -3,7 +3,7 @@ module Larrow
   module Runner
     module Vcs
       describe Github do
-        subject{Github.new 'https://github.com/fsword/essh.git'}
+        subject{Github.new 'https://github.com/fsword/sample_ruby.git'}
         it 'split_org_and_name' do
           git_url = 'git@github.com:org1/proj_name1.git'
           https_url = 'https://github.com/org1/proj_name1.git'
@@ -17,7 +17,7 @@ module Larrow
         it { expect(subject.source_sync_script).not_to be_empty }
         
         after do
-          `rm -rf essh`
+          `rm -rf sample_ruby`
           `rm -rf $HOME/source`
         end
       end

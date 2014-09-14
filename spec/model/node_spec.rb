@@ -13,7 +13,7 @@ module Larrow::Runner::Model
       subject.execute(script) do |data|
         outputs << data
       end
-      expect(outputs).to include('home')
+      expect(outputs).to include(ENV['HOME'])
     end
   end
 end
