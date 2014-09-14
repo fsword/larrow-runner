@@ -14,7 +14,7 @@ module Larrow
       extend self
 
       def configuration source_accessor
-        [ Travis, Larrow, Blank ].each do |clazz|
+        [ Larrow, Travis, Blank ].each do |clazz|
           configuration = clazz.new(source_accessor).load
           return configuration if configuration
         end

@@ -13,6 +13,12 @@ module Larrow::Runner::Manifest
         :start, :integration_test,
         :after_start, :complete #inner_step
       ],
+      custom: [
+        :prepare, 
+        :compile, :unit_test,
+        :install, :functional_test, 
+        :start, :integration_test,
+      ],
       deploy: [
         :init,:source_sync,:prepare, 
         :compile,:before_install,:install,
