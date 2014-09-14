@@ -9,7 +9,7 @@ module Larrow
       # There isn't Adapter module, these classes are under Manifest module.
       autoload :Travis, 'larrow/runner/manifest/adapter/travis'
       autoload :Larrow, 'larrow/runner/manifest/adapter/larrow'
-      autoload :Blank, 'larrow/runner/manifest/adapter/blank'
+      autoload :Blank,  'larrow/runner/manifest/adapter/blank'
 
       extend self
 
@@ -27,7 +27,7 @@ module Larrow
         EOF
         scripts = lines.split(/\n/).map{|s| Script.new s}
         configuration.insert_to_step :init, scripts
-        configuration.insert_to_step :prepare, Script.new(
+        configuration.insert_to_step :source_sync, Script.new(
           source_accessor.source_sync_script
         )
       end

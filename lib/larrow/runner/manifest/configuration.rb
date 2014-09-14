@@ -1,19 +1,30 @@
 module Larrow::Runner::Manifest
   # The top of manifest model which store Steps information 
   class Configuration
-    DEFINED_STEPS = [:init, #inner step
-                     :source_sync, #inner step
-                     :prepare, 
-                     :compile, :unit_test,
-                     :before_install, #inner_step
-                     :install, :functional_test, 
-                     :before_start, #inner_step
-                     :start, :integration_test,
-                     :after_start, :complete #inner_step
-    ]
+    DEFINED_GROUPS = {
+      all:[
+        :init, #inner step
+        :source_sync, #inner step
+        :prepare, 
+        :compile, :unit_test,
+        :before_install, #inner_step
+        :install, :functional_test, 
+        :before_start, #inner_step
+        :start, :integration_test,
+        :after_start, :complete #inner_step
+      ],
+      deploy: [
+        :init,:source_sync,:prepare, 
+        :compile,:before_install,:install,
+        :before_start,:start,:after_start,
+        :complete
+      ],
+      image: [:init]
+    }
+   
     attr_accessor :steps
     def initialize
-      self.steps = Hash[ DEFINED_STEPS.product([nil]) ]
+      self.steps = {}
     end
 
     def put_to_step title, *scripts
@@ -28,19 +39,14 @@ module Larrow::Runner::Manifest
       self
     end
 
-    def each_step skip_test
-      all_steps = if skip_test
-                    DEFINED_STEPS.select{|x| x.to_s !~ /test/}
-                  else
-                    DEFINED_STEPS
-                  end
-      all_steps.each do |title|
+    def steps_for type
+      DEFINED_GROUPS[type].each do |title|
         yield steps[title] if steps[title]
       end
     end
 
     def dump
-      data = DEFINED_STEPS.reduce({}) do |sum,title|
+      data = DEFINED_GROUPS[:all].reduce({}) do |sum,title|
         next sum if steps[title].nil?
         scripts_data = steps[title].scripts.map(&:dump).compact
         sum.update title.to_s => scripts_data

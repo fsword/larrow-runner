@@ -15,11 +15,5 @@ module Larrow::Runner::Cli
       puts YAML.dump Option.all.to_hash
     end
 
-    desc 'transfer [URL]','dump configuration of the project'
-    def transfer url
-      vcs = Vcs.detect url
-      configuration = vcs.configuration false
-      puts configuration.dump
-    end
   end
 end
