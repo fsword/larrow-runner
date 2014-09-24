@@ -29,7 +29,7 @@ module Larrow::Runner::Manifest
       image: [:init]
     }
    
-    attr_accessor :steps
+    attr_accessor :steps, :image
     def initialize
       self.steps = {}
     end
@@ -47,7 +47,10 @@ module Larrow::Runner::Manifest
     end
 
     def steps_for type
-      DEFINED_GROUPS[type].each do |title|
+      groups = DEFINED_GROUPS[type]
+      # ignore init when image id is specified
+      groups = groups - [:init] if image
+      groups.each do |title|
         yield steps[title] if steps[title]
       end
     end

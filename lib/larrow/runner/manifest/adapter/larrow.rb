@@ -8,6 +8,7 @@ module Larrow::Runner::Manifest
       if data.is_a? Array # stages as a Array
         # TODO
       elsif data.is_a? Hash # steps as a Hash
+        configuration.image = data[:image]
         Configuration::DEFINED_GROUPS[:custom].each do |title|
           v = data[title]
           build_step title,v if v
