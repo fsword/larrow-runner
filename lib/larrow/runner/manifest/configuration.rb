@@ -3,7 +3,7 @@ module Larrow::Runner::Manifest
   class Configuration
     DEFINED_GROUPS = {
       all:[
-        :init, #inner step
+        :init,
         :source_sync, #inner step
         :prepare, 
         :compile, :unit_test,
@@ -14,6 +14,7 @@ module Larrow::Runner::Manifest
         :after_start, :complete #inner_step
       ],
       custom: [
+        :init,
         :prepare, 
         :compile, :unit_test,
         :install, :functional_test, 
