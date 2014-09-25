@@ -42,10 +42,8 @@ module Larrow
               end
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
-                if RunOption.key? :debug
-                  RunLogger.level(1).info "exit #{status}"
-                  fail ExecutionError,cmd if status != 0
-                end
+                RunLogger.level(1).info "exit #{status}"
+                fail ExecutionError,cmd if status != 0
               end
             end
           end
