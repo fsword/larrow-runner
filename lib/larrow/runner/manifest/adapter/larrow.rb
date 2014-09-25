@@ -17,7 +17,12 @@ module Larrow::Runner::Manifest
     end
 
     def build_step title, lines
-      scripts = lines.map{|s| Script.new s}
+      source_dir = if title == :init
+                     nil
+                   else
+                     configuration.source_dir
+                   end
+      scripts = lines.map{|s| Script.new s, base_dir: source_dir}
       configuration.put_to_step title, scripts
     end
   end

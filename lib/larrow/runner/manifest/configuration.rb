@@ -29,9 +29,10 @@ module Larrow::Runner::Manifest
       image: [:init]
     }
    
-    attr_accessor :steps, :image
+    attr_accessor :steps, :image, :source_dir
     def initialize
       self.steps = {}
+      self.source_dir = '$HOME/source'
     end
 
     def put_to_step title, *scripts
@@ -44,6 +45,11 @@ module Larrow::Runner::Manifest
       steps[title] ||= Step.new(nil, title)
       steps[title].scripts.unshift *scripts.flatten
       self
+    end
+
+    def add_source_sync source_accessor
+      command_line = source_accessor.source_sync_script source_dir
+      insert_to_step :source_sync, Script.new(command_line)
     end
 
     def steps_for type

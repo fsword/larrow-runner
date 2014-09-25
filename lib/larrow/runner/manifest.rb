@@ -27,9 +27,7 @@ module Larrow
         EOF
         scripts = lines.split(/\n/).map{|s| Script.new s}
         configuration.insert_to_step :init, scripts
-        configuration.insert_to_step :source_sync, Script.new(
-          source_accessor.source_sync_script
-        )
+        configuration.add_source_sync source_accessor
       end
 
       def package_update
