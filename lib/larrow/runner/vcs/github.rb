@@ -36,12 +36,12 @@ module Larrow::Runner::Vcs
       end
     end
 
-    def source_sync_script
+    def source_sync_script target_dir
       ["git clone ",
        "--depth 1",
        "http://github.com/%s/%s.git",
-       "-b %s $HOME/source"
-      ].join(' ') % [organize, name, branch]
+       "-b %s %s"
+      ].join(' ') % [organize, name, branch, target_dir]
     end
   end
 end

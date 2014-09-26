@@ -13,8 +13,9 @@ module Larrow::Runner::Manifest
     end
 
     def map_step title, travis_title
+      source_dir = configuration.source_dir
       scripts = (data[travis_title] || []).map do |cmd|
-        Script.new cmd, base_dir: '$HOME/source'
+        Script.new cmd, base_dir: source_dir
       end
       return nil if scripts.empty?
 

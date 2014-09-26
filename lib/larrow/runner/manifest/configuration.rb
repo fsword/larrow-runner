@@ -3,7 +3,7 @@ module Larrow::Runner::Manifest
   class Configuration
     DEFINED_GROUPS = {
       all:[
-        :init, #inner step
+        :init,
         :source_sync, #inner step
         :prepare, 
         :compile, :unit_test,
@@ -12,6 +12,13 @@ module Larrow::Runner::Manifest
         :before_start, #inner_step
         :start, :integration_test,
         :after_start, :complete #inner_step
+      ],
+      custom: [
+        :init,
+        :prepare, 
+        :compile, :unit_test,
+        :install, :functional_test, 
+        :start, :integration_test,
       ],
       deploy: [
         :init,:source_sync,:prepare, 
@@ -22,9 +29,10 @@ module Larrow::Runner::Manifest
       image: [:init]
     }
    
-    attr_accessor :steps
+    attr_accessor :steps, :image, :source_dir
     def initialize
       self.steps = {}
+      self.source_dir = '$HOME/source'
     end
 
     def put_to_step title, *scripts
@@ -39,8 +47,16 @@ module Larrow::Runner::Manifest
       self
     end
 
+    def add_source_sync source_accessor
+      command_line = source_accessor.source_sync_script source_dir
+      insert_to_step :source_sync, Script.new(command_line)
+    end
+
     def steps_for type
-      DEFINED_GROUPS[type].each do |title|
+      groups = DEFINED_GROUPS[type]
+      # ignore init when image id is specified
+      groups = groups - [:init] if image
+      groups.each do |title|
         yield steps[title] if steps[title]
       end
     end
