@@ -26,7 +26,7 @@ require 'larrow/runner/helper'
 
 require 'larrow/runner/manager'
 require 'larrow/runner/image_builder'
-require 'larrow/runner/command'
+require 'larrow/runner/cli'
 require 'larrow/runner/model/app'
 require 'larrow/runner/model/node'
 
