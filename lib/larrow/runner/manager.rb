@@ -1,3 +1,5 @@
+require 'pry'
+require 'pry-nav'
 module Larrow::Runner
   class Manager
     include Service
