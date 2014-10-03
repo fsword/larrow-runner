@@ -1,5 +1,5 @@
 module Larrow::Runner::Cli
-  class Command < ::Thor
+  class Main < ::Thor
     desc 'version','show version of larrow-runner'
     def version
       puts VERSION
