@@ -11,10 +11,8 @@ module Larrow::Runner::Model
       @executor = Executor.new host, user, nil, nil
     end
 
-    def execute script, &block
-      command = script.actual_command
-      base_dir = script.base_dir
-      @executor.execute command, base_dir: base_dir, &block
+    def execute command, base_dir: nil
+      @executor.execute command, base_dir: base_dir
     end
 
     def stop

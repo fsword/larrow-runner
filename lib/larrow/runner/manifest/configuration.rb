@@ -36,20 +36,21 @@ module Larrow::Runner::Manifest
     end
 
     def put_to_step title, *scripts
-      steps[title] ||= Step.new(nil, title)
+      steps[title] ||= CmdStep.new(nil, title)
       steps[title].scripts += scripts.flatten
       self
     end
 
     def insert_to_step title, *scripts
-      steps[title] ||= Step.new(nil, title)
+      steps[title] ||= CmdStep.new(nil, title)
       steps[title].scripts.unshift *scripts.flatten
       self
     end
 
     def add_source_sync source_accessor
-      command_line = source_accessor.source_sync_script source_dir
-      insert_to_step :source_sync, Script.new(command_line)
+      steps[:source_sync] = FunctionStep.new do |node|
+        source_accessor.update_source node,source_dir
+      end
     end
 
     def steps_for type
@@ -72,11 +73,32 @@ module Larrow::Runner::Manifest
   end
 
   # Describe a set of scripts to accomplish a specific goal
-  class Step
+  class CmdStep
     attr_accessor :scripts, :title
     def initialize scripts, title
       self.scripts = scripts || []
       self.title = title
+    end
+
+    def run_on node
+      scripts.each do |script|
+        node.execute script.actual_command, base_dir: script.base_dir
+      end
+    end
+  end
+
+  # An abstract step which bind business logic with block
+  # This class designed for some typically service,eg:
+  #   * local file folder sync
+  #   * some service invoke
+  class FunctionStep
+    attr_accessor :block
+    def initialize &block
+      self.block = block
+    end
+    
+    def run_on node
+      block.call node
     end
   end
 

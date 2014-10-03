@@ -20,9 +20,7 @@ module Larrow::Runner::Model
       configuration.steps_for(group) do |a_step|
         RunLogger.title "[#{a_step.title}]"
         begin_at = Time.new
-        a_step.scripts.each do |script|
-          node.execute script
-        end
+        a_step.run_on node
         during = sprintf('%.2f',Time.new - begin_at)
         RunLogger.level(1).detail "#{a_step.title} complete (#{during}s)"
       end

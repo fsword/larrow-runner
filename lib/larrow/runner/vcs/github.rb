@@ -36,12 +36,13 @@ module Larrow::Runner::Vcs
       end
     end
 
-    def source_sync_script target_dir
-      ["git clone ",
-       "--depth 1",
-       "http://github.com/%s/%s.git",
-       "-b %s %s"
-      ].join(' ') % [organize, name, branch, target_dir]
+    def update_source node, target_dir
+      template = ["git clone ",
+                  "--depth 1",
+                  "http://github.com/%s/%s.git",
+                  "-b %s %s"].join(' ')
+      cmd = template % [organize, name, branch, target_dir]
+      node.execute cmd
     end
   end
 end
