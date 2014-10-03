@@ -6,11 +6,13 @@ require 'larrow/runner/logger'
 
 module Larrow
   module Runner
-    RunLogger = if ENV['RUN_AS']=='test'
-                  Logger.new 'test.log'
+    # default runtime logger
+    RunLogger = if ENV['RUN_AS']
+                  Logger.new "#{ENV['RUN_AS']}.log"
                 else
                   Logger.new $stdout
                 end
+    # global options
     RunOption = {}.with_indifferent_access
   end
 end
