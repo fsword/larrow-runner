@@ -21,13 +21,13 @@ module Larrow
       end
 
       def add_base_scripts configuration,source_accessor
+        configuration.add_source_sync source_accessor
         lines = <<-EOF
 #{package_update}
 #{bashrc_cleanup}
         EOF
         scripts = lines.split(/\n/).map{|s| Script.new s}
         configuration.insert_to_step :init, scripts
-        configuration.add_source_sync source_accessor
       end
 
       def package_update
