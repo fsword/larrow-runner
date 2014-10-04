@@ -36,17 +36,16 @@ module Larrow::Runner
     def rsync_command user, host, target_dir
       ssh_path = '%s@%s:%s' % [user, host, target_dir]
 
-      excludes = get('.gitignore').split(/[\r\n]/).select do |s|
-        ( s =~ /^[^#]/ ) && s.strip.size > 0
-      end.map do |s|
-        "--exclude '#{s}'"
-      end.join ' '
+      excludes = get('.gitignore').  # rsync exclude according .gitignore
+        split(/[\r\n]/).             # 
+        select{|s| s =~ /^[^#]/}.    # not commented
+        compact.                     # not blank
+        unshift('.git').             # .git itself is ignored
+        map{|s| "--exclude '#{s}'" } # build rsync exclude arguments
     
-      if RunOption.key? :debug
-        rsync_options = "-avz -e ssh #{excludes}"
-      else
-        rsync_options = "-az -e ssh #{excludes}"
-      end
+      rsync_options = "-az -e ssh #{excludes.join ' '}"
+      rsync_options += ' -v' if RunOption.key? :debug
+      
       "rsync #{rsync_options} #{project_folder}/ '#{ssh_path}'"
     end
   end
