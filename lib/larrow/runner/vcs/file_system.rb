@@ -23,14 +23,6 @@ module Larrow::Runner
       `#{command}`.split(/\r?\n/).each do |msg|
         RunLogger.level(1).info msg
       end
-
-      # update source:
-      #   node.host + node.user
-      #   from 
-      #     project_folder
-      #   to
-      #     target_dir
-      # TODO
     end
 
     def rsync_command user, host, target_dir
