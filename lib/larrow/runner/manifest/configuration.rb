@@ -48,7 +48,7 @@ module Larrow::Runner::Manifest
     end
 
     def add_source_sync source_accessor
-      steps[:source_sync] = FunctionStep.new do |node|
+      steps[:source_sync] = FunctionStep.new(:source_sync) do |node|
         source_accessor.update_source node,source_dir
       end
     end
@@ -92,8 +92,9 @@ module Larrow::Runner::Manifest
   #   * local file folder sync
   #   * some service invoke
   class FunctionStep
-    attr_accessor :block
-    def initialize &block
+    attr_accessor :block, :title
+    def initialize title, &block
+      self.title = title
       self.block = block
     end
     
