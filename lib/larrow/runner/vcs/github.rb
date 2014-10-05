@@ -2,7 +2,7 @@ require 'faraday'
 
 module Larrow::Runner::Vcs
   class Github < Base
-    URL_TEMPLATE='https://raw.githubusercontent.com/%s/%s/%s%s'
+    URL_TEMPLATE='https://raw.githubusercontent.com/%s/%s/%s/%s'
     attr_accessor :organize, :name, :branch
     # url sample:
     # git@github.com:fsword/larrow-qingcloud.git

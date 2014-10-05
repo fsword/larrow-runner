@@ -1,6 +1,6 @@
 module Larrow::Runner::Manifest
   class Larrow < BaseLoader
-    CONFIG_FILE='/.larrow.yml'
+    CONFIG_FILE='.larrow.yml'
 
     # TODO manifest validation
     def parse content
