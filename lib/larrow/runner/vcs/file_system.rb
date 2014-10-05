@@ -1,5 +1,3 @@
-require 'faraday'
-
 module Larrow::Runner
   module Vcs
     class FileSystem < Base
