@@ -40,11 +40,12 @@ module Larrow::Runner::Model
       node.stop
       new_image = cloud.create_image node.instance.id
       RunLogger.level(1).detail "New Image Id: #{new_image.id}"
-      RunLogger.level(1).detail %Q|To reduce the system setup, you might want to change larrow.yml.
-You can replace init step with the follow contents:
+      [
+        "To reduce the system setup, you might want to change larrow.yml.",
+        "  You can replace init step with the follow contents:",
+        "  Image: #{new_image.id}"
+      ].each{|s| RunLogger.level(1).detail s}
 
-Image: #{new_image.id}
-|
       new_image
     end
 
