@@ -23,7 +23,7 @@ module Larrow::Runner
       `#{command}`.split(/\r?\n/).each do |msg|
         RunLogger.level(1).info msg
       end
-      `ssh-keygen -R #{node.host}`
+      system "ssh-keygen -R #{node.host}"
     end
 
     def rsync_command user, host, target_dir
@@ -41,7 +41,7 @@ module Larrow::Runner
       rsync_options = "-az #{ssh_options} #{excludes.join ' '}"
       rsync_options += ' -v' if RunOption.key? :debug
       
-      "rsync #{rsync_options} #{project_folder}/ '#{ssh_path}'"
+      "rsync #{rsync_options} #{project_folder}/ '#{ssh_path}' 2>&1"
     end
   end
   end
