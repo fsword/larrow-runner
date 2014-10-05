@@ -6,7 +6,7 @@ module Larrow::Runner
 Read other CI file(eg:.travis.yml), conert to larrow style and dump to STDOUT. 
 You can save it as .larrow.yml on the project root folder.
       EOF
-      def convert url
+      def dump url
         vcs = Vcs.detect url
         configuration = vcs.configuration false
         puts configuration.dump
