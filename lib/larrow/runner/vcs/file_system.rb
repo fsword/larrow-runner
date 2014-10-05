@@ -15,6 +15,8 @@ module Larrow::Runner
 
       def get filename
         file_path = "#{project_folder}/#{filename}"
+        return nil unless File.exist? file_path
+
         File.read(file_path)
       end
 
