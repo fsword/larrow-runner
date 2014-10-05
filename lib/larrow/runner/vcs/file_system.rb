@@ -20,10 +20,8 @@ module Larrow::Runner
 
     def update_source node, target_dir
       command = rsync_command node.user, node.host,target_dir
-      `#{command}`.split(/\r?\n/).each do |msg|
-        RunLogger.level(1).info msg
-      end
-      system "ssh-keygen -R #{node.host}"
+      invoke command
+      invoke "ssh-keygen -R #{node.host} 2>&1"
     end
 
     def rsync_command user, host, target_dir
@@ -43,6 +41,12 @@ module Larrow::Runner
       
       "rsync #{rsync_options} #{project_folder}/ '#{ssh_path}' 2>&1"
     end
+    def invoke command
+      `#{command}`.split(/\r?\n/).each do |msg|
+        RunLogger.level(1).info msg
+      end
+    end
+
   end
   end
 end
