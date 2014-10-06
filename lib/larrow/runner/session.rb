@@ -31,7 +31,7 @@ module Larrow
       end
 
       def load_cloud
-        args = YAML.load File.read(FILE)
+        args = YAML.load(File.read FILE).with_indifferent_access
         Service::Cloud.new args[:qingcloud] rescue nil
       end
 
