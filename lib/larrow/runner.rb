@@ -14,6 +14,8 @@ module Larrow
                 end
     # global options
     RunOption = {}.with_indifferent_access
+    # cloud wrapper
+    Cloud = Service::Cloud.new Session.load
   end
 end
 
@@ -28,5 +30,4 @@ require 'larrow/runner/manager'
 require 'larrow/runner/cli'
 require 'larrow/runner/model/app'
 require 'larrow/runner/model/node'
-
 

@@ -30,7 +30,7 @@ module Larrow::Runner::Model
       RunLogger.title 'allocate resource'
       begin_at = Time.new
       option = {image_id: configuration.image}
-      self.node = Node.new(*cloud.create(option).first)
+      self.node = Node.new(*Cloud.create(option).first)
       during = sprintf('%.2f', Time.new - begin_at)
       RunLogger.level(1).detail "allocated(#{during}s)"
     end
@@ -38,7 +38,7 @@ module Larrow::Runner::Model
     def build_image
       action :image
       node.stop
-      new_image = cloud.create_image node.instance.id
+      new_image = Cloud.create_image node.instance.id
       RunLogger.level(1).detail "New Image Id: #{new_image.id}"
       [
         "To reduce the system setup, you might want to change larrow.yml.",
