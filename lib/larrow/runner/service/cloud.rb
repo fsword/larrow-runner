@@ -40,6 +40,13 @@ module Larrow
         def image? image_id
           Image.list(:self, ids: [image_id]).size == 1
         end
+
+        def check_available
+          KeyPair.list
+        rescue
+          Qingcloud.remove_connection
+          raise $!
+        end
       end
     end
   end

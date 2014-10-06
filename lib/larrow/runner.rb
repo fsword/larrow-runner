@@ -17,13 +17,13 @@ module Larrow
   end
 end
 
-require 'larrow/runner/option'
 require 'larrow/runner/errors'
 require 'larrow/runner/vcs'
 require 'larrow/runner/manifest'
 require 'larrow/runner/service'
 require 'larrow/runner/helper'
 
+require 'larrow/runner/session'
 require 'larrow/runner/manager'
 require 'larrow/runner/cli'
 require 'larrow/runner/model/app'
