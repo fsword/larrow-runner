@@ -3,18 +3,10 @@ require 'active_support/core_ext/hash'
 
 require "larrow/runner/version"
 require 'larrow/runner/logger'
+require 'larrow/runner/service'
+require 'larrow/runner/session'
 
 require 'larrow/runner/errors'
-require 'larrow/runner/vcs'
-require 'larrow/runner/manifest'
-require 'larrow/runner/service'
-require 'larrow/runner/helper'
-
-require 'larrow/runner/session'
-require 'larrow/runner/manager'
-require 'larrow/runner/cli'
-require 'larrow/runner/model/app'
-require 'larrow/runner/model/node'
 
 module Larrow
   module Runner
@@ -31,4 +23,12 @@ module Larrow
   end
 end
 
+require 'larrow/runner/vcs'
+require 'larrow/runner/manifest'
+require 'larrow/runner/helper'
+
+require 'larrow/runner/manager'
+require 'larrow/runner/cli'
+require 'larrow/runner/model/app'
+require 'larrow/runner/model/node'
 
