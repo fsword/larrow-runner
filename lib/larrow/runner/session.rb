@@ -30,8 +30,9 @@ module Larrow
         File.write FILE, YAML.dump(content)
       end
 
-      def load
-        YAML.load File.read(FILE)
+      def load_cloud
+        args = YAML.load File.read(FILE)
+        Service::Cloud.new args[:qingcloud] rescue nil
       end
 
       def value_for name
