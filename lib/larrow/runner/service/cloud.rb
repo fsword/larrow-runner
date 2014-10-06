@@ -5,11 +5,11 @@ module Larrow
     module Service
       class Cloud
         include Qingcloud
-        def initialize
-          access_id   = Option.qingcloud[:qy_access_key_id]
-          secret_key  = Option.qingcloud[:qy_secret_access_key]
-          zone_id     = Option.qingcloud[:zone_id] || 'pek1'
-          @keypair_id = Option.qingcloud[:keypair_id]
+        def initialize args={}
+          access_id   = args[:qy_access_key_id]
+          secret_key  = args[:qy_secret_access_key]
+          zone_id     = args[:zone_id]
+          @keypair_id = args[:keypair_id]
           Qingcloud.establish_connection access_id,secret_key,zone_id
         end
 

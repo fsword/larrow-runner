@@ -18,6 +18,13 @@ larrow will build a whole world for your application
         Manager.new(url).go
       end
 
+      desc 'login', 'log into Qingcloud service'
+      option :force
+      def login
+        RunOption.update options
+        Session.login
+      end
+
       desc 'build [SUBCOMMAND]', 'build your server or images'
       subcommand 'build', Build
 
