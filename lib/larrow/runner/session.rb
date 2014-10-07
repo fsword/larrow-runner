@@ -6,7 +6,7 @@ module Larrow
 
       FILE = "#{ENV['HOME']}/.larrow"
       def login
-        return if File.exist?(FILE) && !can_overwrite
+        return unless check_file
         puts "The larrow config will be generated at #{FILE}."
         data = nil
         loop do
@@ -47,7 +47,10 @@ module Larrow
         v.empty? ? nil : v
       end
 
-      def can_overwrite
+      def check_file
+        return true unless File.exist?(FILE)
+        puts "#{FILE} does exist: "
+        puts File.read(FILE)
         RunOption[:force] || ask("overwrite #{FILE}")
       end
 
