@@ -19,15 +19,20 @@ module Larrow
           connection.open_channel do |ch|
             RunLogger.level(1).detail "# #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
+            errmsg = ''
             ch.exec cmd do |ch,success|
               if RunOption.key? :debug
                 ch.on_data{ |c, data| yield data }
                 ch.on_extended_data{ |c, type, data| yield data }
+              else
+                ch.on_extended_data{ |c, type, data| errmsg << data }
               end
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
-                RunLogger.level(1).info "exit #{status}"
-                fail ExecutionError,cmd if status != 0
+                if status != 0
+                  RunLogger.level(1).info "exit #{status}"
+                  fail ExecutionError,{cmd:cmd, errmsg: errmsg}
+                end
               end
             end
           end
