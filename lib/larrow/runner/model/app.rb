@@ -42,7 +42,7 @@ module Larrow::Runner
         [
           "To reduce the system setup, you might want to change larrow.yml.",
           "  You can replace init step with the follow contents:",
-          "  Image: #{new_image.id}"
+          "  image: #{new_image.id}"
         ].each{|s| RunLogger.level(1).detail s}
 
         new_image
