@@ -3,9 +3,7 @@ module Larrow::Runner::Vcs
     include Larrow::Runner
     def configuration
       configuration = Manifest.configuration(self)
-      unless configuration.image
-        Manifest.add_base_scripts configuration,self
-      end
+      Manifest.add_base_scripts configuration,self
       configuration
     end
 
