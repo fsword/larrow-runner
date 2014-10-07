@@ -46,9 +46,9 @@ module Larrow::Runner
     rescue => e
       if e.is_a? ExecutionError
         data = eval(e.message)
-        RunLogger.level(1).detail "Execute fail -- "
-        RunLogger.level(1).detail "  cmd    -> #{data[:cmd]}"
-        RunLogger.level(1).detail "  stderr -> #{data[:errmsg]}"
+        RunLogger.level(1).err "Execute fail: "
+        RunLogger.level(2).detail "cmd    -> #{data[:cmd]}"
+        RunLogger.level(2).detail "stderr -> #{data[:errmsg]}"
       else
         debug? ? binding.pry : raise(e)
       end
