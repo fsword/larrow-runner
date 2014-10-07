@@ -6,6 +6,7 @@ module Larrow
       class Cloud
         include Qingcloud
         def initialize args={}
+          Qingcloud.remove_connection
           access_id   = args[:qy_access_key_id]
           secret_key  = args[:qy_secret_access_key]
           zone_id     = args[:zone_id]
