@@ -30,8 +30,9 @@ module Larrow
               ch.on_request('exit-status') do |c,data|
                 status = data.read_long
                 if status != 0
-                  RunLogger.level(1).info "exit #{status}"
-                  fail ExecutionError,{cmd:cmd, errmsg: errmsg}
+                  fail ExecutionError,{cmd:cmd,
+                                       errmsg: errmsg, 
+                                       status: status}
                 end
               end
             end
