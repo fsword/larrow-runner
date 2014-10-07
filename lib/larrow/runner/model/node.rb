@@ -1,4 +1,5 @@
-module Larrow::Runner::Model
+module Larrow::Runner
+  module Model
   class Node
     include Larrow::Runner::Service
     attr_accessor :instance, :eip
@@ -33,5 +34,6 @@ module Larrow::Runner::Model
       eip.destroy.force
       self
     end
+  end
   end
 end
