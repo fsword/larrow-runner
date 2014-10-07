@@ -23,7 +23,7 @@ module Larrow
             break
           rescue Exception => e
             RunLogger.info "login fail: #{e.message}"
-            return unless ask "try again ? "
+            return unless ask "try again"
           end
         end
         content={'qingcloud' => data}
@@ -48,13 +48,13 @@ module Larrow
       end
 
       def can_overwrite
-        RunOption[:force] || ask("overwrite #{FILE} ? ")
+        RunOption[:force] || ask("overwrite #{FILE}")
       end
 
       def ask title
-        print title
+        print "#{title} ? (yes/[no]) "
         v = $stdin.gets.strip
-        ['Yes','Y','y','yes'].include? v
+        ['yes','y','Y','Yes','YES'].include? v
       end
     end
   end
