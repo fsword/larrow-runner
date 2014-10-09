@@ -1,9 +1,11 @@
 module Larrow::Runner::Vcs
   class Base
     include Larrow::Runner
-    def configuration
+    def configuration merge=true
       configuration = Manifest.configuration(self)
-      Manifest.add_base_scripts configuration,self
+      if merge
+        Manifest.add_base_scripts configuration,self
+      end
       configuration
     end
 
