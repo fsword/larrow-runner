@@ -1,3 +1,5 @@
+gem 'pry', '0.10.0'
+gem 'pry-nav', '0.2.4'
 require 'pry'
 require 'pry-nav'
 module Larrow::Runner
