@@ -30,9 +30,6 @@ larrow will build a whole world for your application
 
       desc 'tools [SUBCOMMAND]', 'some tools'
       subcommand 'tools', Tools
-
-      desc 'config [SUBCOMMAND]', 'generate/use config'
-      subcommand 'config',Config
     end
   end
 end
