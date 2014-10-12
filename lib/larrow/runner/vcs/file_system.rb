@@ -27,12 +27,12 @@ module Larrow::Runner
       def rsync_command user, host, target_dir
         ssh_path = '%s@%s:%s' % [user, host, target_dir]
 
-        excludes = get('.gitignore').  # rsync exclude according .gitignore
-          split(/[\r\n]/).             # 
-          select{|s| s =~ /^[^#]/}.    # not commented
-          compact.                     # not blank
-          unshift('.git').             # .git itself is ignored
-          map{|s| "--exclude '#{s}'" } # build rsync exclude arguments
+        excludes = (get('.gitignore')||'').  # rsync exclude according .gitignore
+          split(/[\r\n]/).                   # 
+          select{|s| s =~ /^[^#]/}.          # not commented
+          compact.                           # not blank
+          unshift('.git').                   # .git itself is ignored
+          map{|s| "--exclude '#{s}'" }       # build rsync exclude arguments
 
         ssh_options = "-e 'ssh -o StrictHostKeyChecking=no'"
 

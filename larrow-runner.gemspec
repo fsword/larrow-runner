@@ -27,8 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'tilt', '~> 2'
   spec.add_runtime_dependency 'thor', '~> 0.19'
   spec.add_runtime_dependency "activesupport", "~> 4.1"
-  spec.add_runtime_dependency "pry", '~> 0.9', '>= 0.9.0'
-  spec.add_runtime_dependency "pry-nav", '~> 0.2', '>= 0.2.0'
+  spec.add_runtime_dependency "pry", '~> 0.10', '0.10.0'
+  spec.add_runtime_dependency "pry-nav", '~> 0.2', '0.2.4'
 
   spec.add_runtime_dependency 'net-ssh', '~> 2.9'
   spec.add_runtime_dependency 'net-scp', '~> 1.2'

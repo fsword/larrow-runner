@@ -3,12 +3,12 @@ module Larrow::Runner
     class Build < ::Thor
       
       desc 'server <target_url>','build the server'
-      long_desc <<-EOF
+      long_desc <<-EOF.gsub("\n", "\x5")
 Setup a server for application:
 * assign resource
 * init environment
 * prepare server
-* start server
+* start server 
       EOF
       option :debug
       option :nocolor
@@ -20,8 +20,8 @@ Setup a server for application:
       end
 
       desc 'image <target_url>', 'build a base image for the project'
-      long_desc <<-EOF
-Reduce the time is very important for CI or other develop activity.  
+      long_desc <<-EOF.gsub("\n", "\x5")
+Reduce the time is very important for CI or other develop activity.
 There is a best practise to build a image as base system for the project.  
 Larrow will help you to make it simple and reuse the configuration items
       EOF

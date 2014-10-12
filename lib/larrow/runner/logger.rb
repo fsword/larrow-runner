@@ -47,6 +47,10 @@ module Larrow::Runner
       color('green').info msg
     end
 
+    def err msg
+      color('red').info msg
+    end
+
     def wrap_color msg
       return msg if @color.nil?
       code = case @color.downcase

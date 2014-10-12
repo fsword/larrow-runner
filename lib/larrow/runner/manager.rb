@@ -1,3 +1,5 @@
+gem 'pry', '0.10.0'
+gem 'pry-nav', '0.2.4'
 require 'pry'
 require 'pry-nav'
 module Larrow::Runner
@@ -44,7 +46,14 @@ module Larrow::Runner
     def handle_exception
       yield
     rescue => e
-      debug? ? binding.pry : raise(e)
+      if e.is_a?(ExecutionError) && !debug?
+        data = eval(e.message)
+        RunLogger.level(1).err "Execute fail: #{data[:status]}"
+        RunLogger.level(1).detail "cmd    -> #{data[:cmd]}"
+        RunLogger.level(1).detail "stderr -> #{data[:errmsg]}"
+      else
+        debug? ? binding.pry : raise(e)
+      end
     ensure
       release unless keep?
     end

@@ -22,12 +22,14 @@ module Larrow
 
       def add_base_scripts configuration,source_accessor
         configuration.add_source_sync source_accessor
-        lines = <<-EOF
+        unless configuration.image
+          lines = <<-EOF
 #{package_update}
 #{bashrc_cleanup}
-        EOF
-        scripts = lines.split(/\n/).map{|s| Script.new s}
-        configuration.insert_to_step :init, scripts
+          EOF
+          scripts = lines.split(/\n/).map{|s| Script.new s}
+          configuration.insert_to_step :init, scripts
+        end
       end
 
       def package_update

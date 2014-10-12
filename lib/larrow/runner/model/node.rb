@@ -1,4 +1,5 @@
-module Larrow::Runner::Model
+module Larrow::Runner
+  module Model
   class Node
     include Larrow::Runner::Service
     attr_accessor :instance, :eip
@@ -11,8 +12,17 @@ module Larrow::Runner::Model
       @executor = Executor.new host, user, nil, nil
     end
 
-    def execute command, base_dir: nil
-      @executor.execute command, base_dir: base_dir
+    def execute command, base_dir:nil
+      block = if block_given?
+                -> (data) { yield data }
+              else
+                -> (data) {
+                  data.split(/\r?\n/).each do |msg|
+                    RunLogger.level(1).info msg 
+                  end
+                }
+              end
+      @executor.execute command, base_dir: base_dir, &block
     end
 
     def stop
@@ -24,5 +34,6 @@ module Larrow::Runner::Model
       eip.destroy.force
       self
     end
+  end
   end
 end
