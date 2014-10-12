@@ -9,7 +9,7 @@ module Larrow::Runner
           self.larrow_file    = File.basename path
           self.project_folder = File.dirname path 
         else # directory
-          self.project_folder =  = File.absolute_path path
+          self.project_folder = File.absolute_path path
         end
       end
 
