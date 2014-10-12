@@ -10,8 +10,8 @@ module Larrow
         case url
         when /github/
           Github.new(url)
-        else
-          fail "cannot recognized: #{url}" unless File.directory? url
+        else # local file/folder
+          fail "cannot recognized: #{url}" unless File.exist? url
           FileSystem.new url
         end
       end

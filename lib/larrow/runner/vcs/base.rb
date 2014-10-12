@@ -1,5 +1,6 @@
 module Larrow::Runner::Vcs
   class Base
+    attr_accessor :larrow_file
     include Larrow::Runner
     def configuration merge=true
       configuration = Manifest.configuration(self)
