@@ -8,10 +8,10 @@ module Larrow
       autoload :FileSystem,'larrow/runner/vcs/file_system'
       def self.detect url
         case url
-        when /github/
+        when /github\.com.+\.git$/
           Github.new(url)
-        else
-          fail "cannot recognized: #{url}" unless File.directory? url
+        else # local file/folder
+          fail "cannot recognized: #{url}" unless File.exist? url
           FileSystem.new url
         end
       end

@@ -3,8 +3,14 @@ module Larrow::Runner
     class FileSystem < Base
       # path: absulute path of LarrowFile
       attr_accessor :project_folder
-      def initialize project_folder
-        self.project_folder = File.absolute_path project_folder
+      def initialize path
+        if File.file? path
+          path  = File.absolute_path path
+          self.larrow_file    = File.basename path
+          self.project_folder = File.dirname path 
+        else # directory
+          self.project_folder = File.absolute_path path
+        end
       end
 
       def formatted_url
