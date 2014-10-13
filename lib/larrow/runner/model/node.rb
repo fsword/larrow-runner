@@ -2,6 +2,7 @@ module Larrow::Runner
   module Model
   class Node
     include Larrow::Runner::Service
+    include Larrow::Qingcloud
     attr_accessor :instance, :eip
     attr_accessor :user,:host
     def initialize instance, eip, user='root'
@@ -37,20 +38,26 @@ module Larrow::Runner
 
     def resource
       {instance:{id: instance.id},
-       eip:{id:eip.id}
+       eip:{id:eip.id, address:eip.address}
       }
     end
 
     def self.cleanup resources
       resources.map do |hash|
         instance = Instance.new hash[:instance][:id]
-        eip = Eip.new hash[:eip][:id]
-        [instance.destroy, eip]
-      end.map do |instance, eip|
-        instance.force
-        eip.destroy
-      end.map(&:force)
+        [instance.destroy, hash]
+      end.map do |future, hash|
+        future.force
+        [Eip.new(hash[:eip][:id]).destroy,hash]
+      end.map do |future, hash|
+        if future.force == :already_deleted
+          RunLogger.detail "node has been cleaned"
+        else
+          RunLogger.detail "node cleaned: #{hash[:eip][:address]}"
+        end
+      end
     end
+
   end
   end
 end

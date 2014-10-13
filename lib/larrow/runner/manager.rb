@@ -72,17 +72,17 @@ module Larrow::Runner
 
     def store_resource
       resource = app.resource
-      File.write 'resource.yml', YAML.dump(resource)
+      File.write '.larrow.resource', YAML.dump(resource)
       RunLogger.title 'store resource'
     end
 
-    def cleanup
-      resource = YAML.load(File.read 'resource.yml') rescue nil
+    def self.cleanup
+      resource = YAML.load(File.read '.larrow.resource') rescue nil
       return if resource.nil?
       resource.each_pair do |k,array|
         case k
-        when 'nodes'
-          Node.cleanup array
+        when :nodes
+          Model::Node.cleanup array
         end
       end
       RunLogger.title 'resource cleaned'
