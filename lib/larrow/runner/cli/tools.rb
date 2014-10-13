@@ -11,6 +11,15 @@ You can save it as .larrow.yml on the project root folder.
         configuration = vcs.configuration false
         puts configuration.dump
       end
+      
+      desc 'cleanup','cleanup all resource in Resource.yml'
+      long_desc <<-EOF.gsub("\n", "\x5")
+Read .larrow.resource from current directory, and release all resources.
+resource: instance, eip, etc...
+      EOF
+      def cleanup
+        Manager.cleanup
+      end
     end
   end
 end

@@ -55,7 +55,11 @@ module Larrow::Runner
         debug? ? binding.pry : raise(e)
       end
     ensure
-      release unless keep?
+      if keep?
+        store_resource
+      else
+        release
+      end
     end
 
     def debug?
@@ -64,6 +68,24 @@ module Larrow::Runner
 
     def keep?
       RunOption.key? :keep
+    end
+
+    def store_resource
+      resource = app.resource
+      File.write '.larrow.resource', YAML.dump(resource)
+      RunLogger.title 'store resource'
+    end
+
+    def self.cleanup
+      resource = YAML.load(File.read '.larrow.resource') rescue nil
+      return if resource.nil?
+      resource.each_pair do |k,array|
+        case k
+        when :nodes
+          Model::Node.cleanup array
+        end
+      end
+      RunLogger.title 'resource cleaned'
     end
 
     def release
