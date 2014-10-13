@@ -74,7 +74,18 @@ module Larrow::Runner
       resource = app.resource
       File.write 'resource.yml', YAML.dump(resource)
       RunLogger.title 'store resource'
-      puts JSON.pretty_generate(resource)
+    end
+
+    def cleanup
+      resource = YAML.load(File.read 'resource.yml') rescue nil
+      return if resource.nil?
+      resource.each_pair do |k,array|
+        case k
+        when 'nodes'
+          Node.cleanup array
+        end
+      end
+      RunLogger.title 'resource cleaned'
     end
 
     def release

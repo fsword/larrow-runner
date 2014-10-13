@@ -40,6 +40,17 @@ module Larrow::Runner
        eip:{id:eip.id}
       }
     end
+
+    def self.cleanup resources
+      resources.map do |hash|
+        instance = Instance.new hash[:instance][:id]
+        eip = Eip.new hash[:eip][:id]
+        [instance.destroy, eip]
+      end.map do |instance, eip|
+        instance.force
+        eip.destroy
+      end.map(&:force)
+    end
   end
   end
 end
