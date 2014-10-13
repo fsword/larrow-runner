@@ -53,6 +53,10 @@ module Larrow::Runner
         RunLogger.level(1).detail "application is deploy on: #{node.host}"
         node
       end
+
+      def resource
+        {nodes:[node.resource]}
+      end
     end
   end
 end

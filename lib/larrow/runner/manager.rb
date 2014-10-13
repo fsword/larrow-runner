@@ -55,7 +55,11 @@ module Larrow::Runner
         debug? ? binding.pry : raise(e)
       end
     ensure
-      release unless keep?
+      if keep?
+        store_resource
+      else
+        release
+      end
     end
 
     def debug?
@@ -64,6 +68,13 @@ module Larrow::Runner
 
     def keep?
       RunOption.key? :keep
+    end
+
+    def store_resource
+      resource = app.resource
+      File.write 'resource.yml', YAML.dump(resource)
+      RunLogger.title 'store resource'
+      puts JSON.pretty_generate(resource)
     end
 
     def release

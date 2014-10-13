@@ -34,6 +34,12 @@ module Larrow::Runner
       eip.destroy.force
       self
     end
+
+    def resource
+      {instance:{id: instance.id},
+       eip:{id:eip.id}
+      }
+    end
   end
   end
 end
