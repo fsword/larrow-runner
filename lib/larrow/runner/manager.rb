@@ -46,11 +46,11 @@ module Larrow::Runner
     def handle_exception
       yield
     rescue => e
+      RunOption[:keep] = true if e.is_a?(ExecutionError)
       if e.is_a?(ExecutionError) && !debug?
         data = eval(e.message)
         RunLogger.level(1).err "Execute fail: #{data[:status]}"
-        RunLogger.level(1).detail "cmd    -> #{data[:cmd]}"
-        RunLogger.level(1).detail "stderr -> #{data[:errmsg]}"
+        RunLogger.level(1).err "-> #{data[:errmsg]}"
       else
         debug? ? binding.pry : raise(e)
       end
