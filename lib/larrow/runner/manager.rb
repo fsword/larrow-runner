@@ -71,21 +71,9 @@ module Larrow::Runner
     end
 
     def store_resource
-      resource = app.resource
+      resource = app.dump
       File.write '.larrow.resource', YAML.dump(resource)
       RunLogger.title 'store resource'
-    end
-
-    def self.cleanup
-      resource = YAML.load(File.read '.larrow.resource') rescue nil
-      return if resource.nil?
-      resource.each_pair do |k,array|
-        case k
-        when :nodes
-          Model::Node.cleanup array
-        end
-      end
-      RunLogger.title 'resource cleaned'
     end
 
     def release
@@ -96,6 +84,31 @@ module Larrow::Runner
       end
       during = sprintf('%.2f', Time.new - begin_at)
       RunLogger.level(1).detail "released(#{during}s)"
+    end
+
+    def self.resource
+      resource_iterator do |clazz, array|
+        RunLogger.detail clazz.name.split("::").last
+        clazz.show array, 1
+      end
+    end
+
+    def self.cleanup
+      resource_iterator do |clazz, array|
+        clazz.cleanup array
+      end
+      RunLogger.title 'resource cleaned'
+    end
+
+    def self.resource_iterator
+      resource = YAML.load(File.read '.larrow.resource') rescue nil
+      return if resource.nil?
+      resource.each_pair do |k,array|
+        case k
+        when :nodes
+          yield Model::Node, array
+        end
+      end
     end
   end
 end

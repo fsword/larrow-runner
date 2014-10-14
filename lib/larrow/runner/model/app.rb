@@ -54,8 +54,8 @@ module Larrow::Runner
         node
       end
 
-      def resource
-        {nodes:[node.resource]}
+      def dump
+        {nodes:[node.dump]}
       end
     end
   end

@@ -36,26 +36,36 @@ module Larrow::Runner
       self
     end
 
-    def resource
-      {instance:{id: instance.id},
-       eip:{id:eip.id, address:eip.address}
+    def dump
+      {
+        instance:{id: instance.id},
+        eip:{id:eip.id, address:eip.address}
       }
+    end
+
+    def self.show resources, level=0
+      resources.map do |hash|
+        node = load_obj hash
+        RunLogger.level(level).info "instance: #{node.instance.id}"
+        RunLogger.level(level).info "eip:"
+        RunLogger.level(level+1).info "id: #{node.eip.id}"
+        RunLogger.level(level+1).info "address: #{node.eip.address}"
+      end
     end
 
     def self.cleanup resources
       resources.map do |hash|
-        instance = Instance.new hash[:instance][:id]
-        [instance.destroy, hash]
-      end.map do |future, hash|
-        future.force
-        [Eip.new(hash[:eip][:id]).destroy,hash]
-      end.map do |future, hash|
-        if future.force == :already_deleted
-          RunLogger.detail "node has been cleaned"
-        else
-          RunLogger.detail "node cleaned: #{hash[:eip][:address]}"
-        end
+        node = load_obj hash
+        future{node.destroy}
+      end.map do |instance|
+        RunLogger.detail "node cleaned: #{instance.address}"
       end
+    end
+
+    def self.load_obj data
+        instance = Instance.new data[:instance][:id]
+        eip = Eip.new data[:eip][:id],address:data[:eip][:address]
+        new instance,eip
     end
 
   end
