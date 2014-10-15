@@ -2,7 +2,7 @@ module Larrow::Runner
   module Cli
     class Build < ::Thor
       
-      desc 'server <target_url>','build the server'
+      desc 'server <URL/path>','build the server'
       long_desc <<-EOF.gsub("\n", "\x5")
 Setup a server for application:
 * assign resource
@@ -19,7 +19,7 @@ Setup a server for application:
         Manager.new(url).build_server
       end
 
-      desc 'image <target_url/larrow_file_path>', 'build a base image'
+      desc 'image <URL/path>', 'build a base image'
       long_desc <<-EOF.gsub("\n", "\x5")
 Reduce the time is very important for CI or other develop activity.
 There is a best practise to build a image as base system for the project.  
