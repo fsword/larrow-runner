@@ -46,10 +46,10 @@ module Larrow::Runner
     def self.show resources, level=0
       resources.map do |hash|
         node = load_obj hash
-        RunLogger.level(level).info "instance: #{node.instance.id}"
-        RunLogger.level(level).info "eip:"
-        RunLogger.level(level+1).info "id: #{node.eip.id}"
-        RunLogger.level(level+1).info "address: #{node.eip.address}"
+        RunLogger.level(level).detail "instance: #{node.instance.id}"
+        RunLogger.level(level).detail "eip:"
+        RunLogger.level(level+1).detail "id: #{node.eip.id}"
+        RunLogger.level(level+1).detail "address: #{node.eip.address}"
       end
     end
 
@@ -58,7 +58,7 @@ module Larrow::Runner
         node = load_obj hash
         future{node.destroy}
       end.map do |node|
-        RunLogger.detail "node cleaned: #{node.eip.address}"
+        RunLogger.info "node cleaned: #{node.eip.address}"
       end
     end
 

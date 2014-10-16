@@ -88,7 +88,7 @@ module Larrow::Runner
 
     def self.resource
       resource_iterator do |clazz, array|
-        RunLogger.detail clazz.name.split("::").last
+        RunLogger.info clazz.name.split("::").last
         clazz.show array, 1
       end
     end
