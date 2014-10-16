@@ -101,7 +101,8 @@ module Larrow::Runner
     end
 
     def self.resource_iterator
-      resource = YAML.load(File.read '.larrow.resource') rescue nil
+      RunLogger.title "load resource from #{ResourcePath}"
+      resource = YAML.load(File.read ResourcePath) rescue nil
       return if resource.nil?
       resource.each_pair do |k,array|
         case k
