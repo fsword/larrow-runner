@@ -13,8 +13,15 @@ module Larrow
           end
         end
 
-        it { expect(subject.get '/.travis.yml').not_to be_empty }
-        it { expect(subject.source_sync_script).not_to be_empty }
+        it 'get' do
+          expect(subject.get '/.travis.yml').not_to be_empty
+        end
+        
+        it 'update_source' do
+          node = double('node')
+          allow(node).to(receive :execute){|cmd| cmd}
+          expect(subject.update_source(node,nil)).not_to be_empty 
+        end
         
         after do
           `rm -rf sample_ruby`

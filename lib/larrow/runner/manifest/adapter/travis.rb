@@ -2,7 +2,7 @@ require 'yaml'
 
 module Larrow::Runner::Manifest
   class Travis < BaseLoader
-    CONFIG_FILE='/.travis.yml'
+    CONFIG_FILE='.travis.yml'
     attr_accessor :data
 
     def parse content
@@ -32,8 +32,8 @@ module Larrow::Runner::Manifest
     TEMPLATE_PATH='/opt/install/erlang/%s'
     def self.fulfill data, configuration
       revision = case data[:otp_release].last
-                 when /R15/ then 'R15B03-1'
-                 when /R16/ then 'R16B03-1'
+                 when /R15/ then 'R15B03'
+                 when /R16/ then 'R16B03'
                  when /17/  then '17.1'
                  end rescue '17'
       install_dir = sprintf(TEMPLATE_PATH,revision.downcase)

@@ -6,12 +6,16 @@ module Larrow::Runner::Manifest
     end
 
     def load
-      content = source_accessor.get self.class.const_get 'CONFIG_FILE'
+      content = source_accessor.get config_file
       return nil if content.nil?
 
       self.configuration = Configuration.new
       parse content
       self.configuration
+    end
+    
+    def config_file
+      self.class.const_get('CONFIG_FILE')
     end
   end
 end

@@ -1,5 +1,4 @@
 require_relative '../spec_helper.rb'
-require 'ostruct'
 
 module Larrow::Runner::Model
   describe Node do
@@ -10,7 +9,7 @@ module Larrow::Runner::Model
     it 'can execute' do
       outputs = ""
       script = OpenStruct.new(actual_command: 'pwd')
-      subject.execute(script) do |data|
+      subject.execute('pwd') do |data|
         outputs << data
       end
       expect(outputs).to include(ENV['HOME'])

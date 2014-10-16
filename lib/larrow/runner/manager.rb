@@ -1,3 +1,7 @@
+gem 'pry', '0.10.0'
+gem 'pry-nav', '0.2.4'
+require 'pry'
+require 'pry-nav'
 module Larrow::Runner
   class Manager
     include Service
@@ -42,9 +46,20 @@ module Larrow::Runner
     def handle_exception
       yield
     rescue => e
-      debug? ? binding.pry : raise(e)
+      RunOption[:keep] = true if e.is_a?(ExecutionError)
+      if e.is_a?(ExecutionError) && !debug?
+        data = eval(e.message)
+        RunLogger.level(1).err "Execute fail: #{data[:status]}"
+        RunLogger.level(1).err "-> #{data[:errmsg]}"
+      else
+        debug? ? binding.pry : raise(e)
+      end
     ensure
-      release unless keep?
+      if keep?
+        store_resource
+      else
+        release
+      end
     end
 
     def debug?
@@ -55,6 +70,12 @@ module Larrow::Runner
       RunOption.key? :keep
     end
 
+    def store_resource
+      resource = app.dump
+      File.write '.larrow.resource', YAML.dump(resource)
+      RunLogger.title 'store resource'
+    end
+
     def release
       RunLogger.title 'release resource'
       begin_at = Time.new
@@ -63,6 +84,31 @@ module Larrow::Runner
       end
       during = sprintf('%.2f', Time.new - begin_at)
       RunLogger.level(1).detail "released(#{during}s)"
+    end
+
+    def self.resource
+      resource_iterator do |clazz, array|
+        RunLogger.detail clazz.name.split("::").last
+        clazz.show array, 1
+      end
+    end
+
+    def self.cleanup
+      resource_iterator do |clazz, array|
+        clazz.cleanup array
+      end
+      RunLogger.title 'resource cleaned'
+    end
+
+    def self.resource_iterator
+      resource = YAML.load(File.read '.larrow.resource') rescue nil
+      return if resource.nil?
+      resource.each_pair do |k,array|
+        case k
+        when :nodes
+          yield Model::Node, array
+        end
+      end
     end
   end
 end

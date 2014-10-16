@@ -5,11 +5,12 @@ module Larrow
     module Service
       class Cloud
         include Qingcloud
-        def initialize
-          access_id   = Option.qingcloud[:qy_access_key_id]
-          secret_key  = Option.qingcloud[:qy_secret_access_key]
-          zone_id     = Option.qingcloud[:zone_id] || 'pek1'
-          @keypair_id = Option.qingcloud[:keypair_id]
+        def initialize args={}
+          Qingcloud.remove_connection
+          access_id   = args[:qy_access_key_id]
+          secret_key  = args[:qy_secret_access_key]
+          zone_id     = args[:zone_id]
+          @keypair_id = args[:keypair_id]
           Qingcloud.establish_connection access_id,secret_key,zone_id
         end
 
@@ -17,7 +18,7 @@ module Larrow
         # WARN: eips contains promise object, so it should be force
         def create image_id:nil,count:1
           RunLogger.level(1).detail "assign node"
-          instances = Instance.create(image_id: image_id,
+          instances = Instance.create(image_id: image_id||'trustysrvx64c',
                                                  count:count,
                                                  login_mode:'keypair',
                                                  keypair_id: @keypair_id
@@ -39,6 +40,13 @@ module Larrow
 
         def image? image_id
           Image.list(:self, ids: [image_id]).size == 1
+        end
+
+        def check_available
+          KeyPair.list
+        rescue
+          Qingcloud.remove_connection
+          raise $!
         end
       end
     end
