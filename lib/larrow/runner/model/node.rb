@@ -57,8 +57,8 @@ module Larrow::Runner
       resources.map do |hash|
         node = load_obj hash
         future{node.destroy}
-      end.map do |instance|
-        RunLogger.detail "node cleaned: #{instance.address}"
+      end.map do |node|
+        RunLogger.detail "node cleaned: #{node.eip.address}"
       end
     end
 
