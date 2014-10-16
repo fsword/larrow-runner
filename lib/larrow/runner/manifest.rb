@@ -9,27 +9,27 @@ module Larrow
       # There isn't Adapter module, these classes are under Manifest module.
       autoload :Travis, 'larrow/runner/manifest/adapter/travis'
       autoload :Larrow, 'larrow/runner/manifest/adapter/larrow'
-      autoload :Blank, 'larrow/runner/manifest/adapter/blank'
+      autoload :Blank,  'larrow/runner/manifest/adapter/blank'
 
       extend self
 
       def configuration source_accessor
-        [ Travis, Larrow, Blank ].each do |clazz|
+        [ Larrow, Travis, Blank ].each do |clazz|
           configuration = clazz.new(source_accessor).load
           return configuration if configuration
         end
       end
 
       def add_base_scripts configuration,source_accessor
-        lines = <<-EOF
+        configuration.add_source_sync source_accessor
+        unless configuration.image
+          lines = <<-EOF
 #{package_update}
 #{bashrc_cleanup}
-        EOF
-        scripts = lines.split(/\n/).map{|s| Script.new s}
-        configuration.insert_to_step :init, scripts
-        configuration.insert_to_step :prepare, Script.new(
-          source_accessor.source_sync_script
-        )
+          EOF
+          scripts = lines.split(/\n/).map{|s| Script.new s}
+          configuration.insert_to_step :init, scripts
+        end
       end
 
       def package_update

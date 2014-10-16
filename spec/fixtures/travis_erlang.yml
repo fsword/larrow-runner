@@ -1,0 +1,8 @@
+language: erlang
+before_script:
+  - erl -verion
+script:
+  - ./rebar compile ct
+otp_release:
+  - R16B
+

@@ -1,32 +1,41 @@
-module Larrow::Runner::Cli
-  class Build < ::Thor
-    desc 'server <target_url>','setup the server environment'
-    def server url
-      puts "build server by #{url}"
-    end
-
-    desc 'image <LarrowFile>','setup environment and cache it as a image'
-    long_desc <<-EOF
-Reduce the time is very important for CI or other develop activity.  
-There is a best practise to build a image as base system for the project.  
-Larrow will help you to make it simple and reuse the configuration items
-    EOF
-    def image file_path
-      RunLogger.title '[Read larrow file]'
-      content = File.read file_path
-      config = YAML.load(content).with_indifferent_access
-      RunLogger.level(1).detail "loaded from #{file_path}"
-      if ImageBuilder.check config[:image_id]
-        RunLogger.level(1).detail 'image has already be created.'
-        return
+module Larrow::Runner
+  module Cli
+    class Build < ::Thor
+      
+      desc 'server <URL/path>','build the server'
+      long_desc <<-EOF.gsub("\n", "\x5")
+Setup a server for application:
+* assign resource
+* init environment
+* prepare server
+* start server 
+      EOF
+      option :debug
+      option :nocolor
+      def server url
+        RunOption.update options
+        RunOption[:keep] = true
+        RunLogger.nocolor if RunOption.key? :nocolor
+        Manager.new(url).build_server
       end
-      image_id = ImageBuilder.from(config[:from]).run(config[:run]).build
-      RunLogger.title '[Write image id]'
-      # remove old image_id entry
-      content = content.split(/\n/).select{|s| s =~ /^image_id: /}.join("\n")
-      # add image_id entry
-      content.gsub!(/\r?\n$/,'') << "\nimage_id: #{image_id}\n"
-      File.write file_path, content
+
+      desc 'image <URL/path>', 'build a base image'
+      long_desc <<-EOF.gsub("\n", "\x5")
+Reduce the time is very important for CI or other develop activity.
+There is a best practise to build a image as base system for the project.  
+Larrow will help you to make it simple and reuse the configuration items.
+
+Your can use a single Larrowfile as the argument.
+      EOF
+      option :debug
+      option :nocolor
+      def image url
+        RunOption.update options
+        RunLogger.nocolor if RunOption.key? :nocolor
+        Manager.new(url).build_image
+      end
+
     end
   end
 end
+

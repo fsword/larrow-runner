@@ -1,0 +1,9 @@
+language: ruby
+rvm: 
+  - 2.1
+
+before_script:
+  - ruby -v
+script:
+  - ruby -e 'puts :hello'
+
