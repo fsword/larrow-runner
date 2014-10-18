@@ -24,9 +24,11 @@ module Larrow
           c = clazz.new(source_accessor).load
           break c if c
         end
-        return configuration if options[:ignore_base_scripts]
-        
-        add_base_scripts(configuration, source_accessor)
+      
+        unless options[:ignore_base_scripts]
+          add_base_scripts(configuration, source_accessor)
+        end
+        configuration
       end
 
       def add_base_scripts configuration,source_accessor
