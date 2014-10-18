@@ -1,1 +1,2 @@
-ExecutionError = Class.new StandardError
+ExecutionError    = Class.new StandardError
+InvalidConfigFile = Class.new StandardError
