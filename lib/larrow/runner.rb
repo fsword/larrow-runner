@@ -17,8 +17,6 @@ module Larrow
                 end
     # global options
     RunOption = {}.with_indifferent_access
-    # cloud wrapper
-    Cloud = Session.load_cloud
     # default resource file path
     ResourcePath = '.larrow.resource'
   end

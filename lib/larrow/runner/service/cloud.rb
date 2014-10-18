@@ -44,6 +44,7 @@ module Larrow
 
         def check_available
           KeyPair.list
+          self
         rescue
           Qingcloud.remove_connection
           raise $!

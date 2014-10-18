@@ -16,9 +16,9 @@ module Larrow
                   :keypair_id].
                   reduce({}){|s,key| s.update key => value_for(key)}
 
-          cloud = Service::Cloud.new data
+          tmp_cloud = Service::Cloud.new data
           begin
-            cloud.check_available
+            tmp_cloud.check_available
             RunLogger.info "login success! write to ~/.larrow"
             break
           rescue Exception => e
@@ -30,15 +30,18 @@ module Larrow
         File.write FILE, YAML.dump(content)
       end
 
-      def load_cloud
-        args = begin
-                 YAML.
-                   load(File.read FILE).
-                   with_indifferent_access[:qingcloud]
-               rescue
-                 nil
-               end
-        Service::Cloud.new args if args
+      def cloud
+        @cloud ||= begin
+                     args = YAML.
+                       load(File.read FILE).
+                       with_indifferent_access[:qingcloud]
+                     Service::Cloud.new(args).check_available
+                   rescue
+                     fail(InvalidConfigFile,
+                          {file:FILE,
+                           wiki:"configuration-cloud-account-for-larrow"}
+                         )
+                   end
       end
 
       def value_for name

@@ -1,7 +1,7 @@
 module Larrow::Runner
   module Model
     class App
-
+      include Service
       attr_accessor :vcs, :node, :configuration
       def initialize vcs, attributes={}
         self.vcs = vcs
@@ -29,7 +29,7 @@ module Larrow::Runner
         RunLogger.title 'allocate resource'
         begin_at = Time.new
         option = {image_id: configuration.image}
-        self.node = Node.new(*Cloud.create(option).first)
+        self.node = Node.new(*Session.cloud.create(option).first)
         during = sprintf('%.2f', Time.new - begin_at)
         RunLogger.level(1).detail "allocated(#{during}s)"
       end
@@ -37,7 +37,7 @@ module Larrow::Runner
       def build_image
         action :image
         node.stop
-        new_image = Cloud.create_image node.instance.id
+        new_image = Session.cloud.create_image node.instance.id
         RunLogger.level(1).detail "New Image Id: #{new_image.id}"
         [
           "To reduce the system setup, you might want to change larrow.yml.",
