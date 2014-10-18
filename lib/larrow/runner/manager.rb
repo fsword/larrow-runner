@@ -45,6 +45,11 @@ module Larrow::Runner
 
     def handle_exception
       yield
+    rescue InvalidConfigFile => e
+      data = eval(e.message)
+      url = "https://github.com/fsword/larrow-runner/wiki/#{data[:wiki]}"
+      RunLogger.err "invalid config file: #{data[:file]}"
+      RunLogger.level(1).err "see: #{url}"
     rescue => e
       RunOption[:keep] = true if e.is_a?(ExecutionError)
       if e.is_a?(ExecutionError) && !debug?
