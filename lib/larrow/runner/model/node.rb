@@ -1,3 +1,4 @@
+require 'larrow/qingcloud'
 module Larrow::Runner
   module Model
   class Node
