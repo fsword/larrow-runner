@@ -26,7 +26,7 @@ module Larrow
         end
         return configuration if options[:ignore_base_scripts]
         
-        add_base_scripts(configuration)
+        add_base_scripts(configuration, source_accessor)
       end
 
       def add_base_scripts configuration,source_accessor
