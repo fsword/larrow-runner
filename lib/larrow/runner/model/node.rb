@@ -32,8 +32,7 @@ module Larrow::Runner
     end
 
     def destroy
-      instance.destroy.force
-      eip.destroy.force
+      Session.cloud.destroy instance,eip
       self
     end
 

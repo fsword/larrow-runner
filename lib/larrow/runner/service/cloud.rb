@@ -42,6 +42,11 @@ module Larrow
           Image.list(:self, ids: [image_id]).size == 1
         end
 
+        # concurrent destroy(force)
+        def destroy *args
+          args.map(&:destroy).map(&:force)
+        end
+
         def check_available
           KeyPair.list
           self
