@@ -19,10 +19,10 @@ module Larrow
         def create image_id:nil,count:1
           RunLogger.level(1).detail "assign node"
           instances = Instance.create(image_id: image_id||'trustysrvx64c',
-                                                 count:count,
-                                                 login_mode:'keypair',
-                                                 keypair_id: @keypair_id
-                                                )
+                                      count:count,
+                                      login_mode:'keypair',
+                                      keypair_id: @keypair_id
+                                     )
 
           eips = Eip.create(count:count)
           
