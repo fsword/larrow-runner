@@ -40,27 +40,26 @@ Congratulation! Now you can use larrow to help your develop works.
 
 ### testing
 
-unit test, integration test, system test, etc.)
+Unit test, integration test, system test, etc.
 ```
 $ larrow go <source_url>
 ```
 
 ### application startup
 
-make a standalone application and start it(if necessary)
+Make a standalone application and start it(if necessary)
 ```
 $ larrow build server <source_url>
 ```
 
 ### build image
 
-use image to speed-up your development
+Use image to speed-up your development
 
 * build a image of your application
 ```
 $ larrow build image <source_url>
 ```
-
 * build a image from local LarrowFile
 ```
 $ larrow build image <larrow_file_path>
@@ -70,7 +69,7 @@ $ larrow build image <larrow_file_path>
 
 Larrow need to know how to setup/make/install/start... your application. So developer could write a `Larrow File` to declare these things.
 
-Larrow can be used as a CI worker like travis. 
+default larrow file: $source/.larrow.yml
 ## Contributing
 
 1. Fork it ( http://github.com/fsword/larrow-core/fork )
