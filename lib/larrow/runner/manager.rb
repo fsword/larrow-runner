@@ -102,14 +102,15 @@ module Larrow::Runner
 
     def self.resource_iterator
       RunLogger.title "load resource from #{ResourcePath}"
-      resource = YAML.load(File.read ResourcePath) rescue nil
-      return if resource.nil?
+      resource = YAML.load(File.read ResourcePath) rescue {}
+      
       resource.each_pair do |k,array|
         case k
         when :nodes
           yield Model::Node, array
         end
       end
+      RunLogger.detail "no resource on the file" if resource.empty?
     end
   end
 end
