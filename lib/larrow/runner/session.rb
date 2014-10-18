@@ -39,7 +39,7 @@ module Larrow
                    rescue
                      fail(InvalidConfigFile,
                           {file:FILE,
-                           wiki:"configuration-cloud-account-for-larrow"}
+                           wiki:"setup-cloud-account"}
                          )
                    end
       end
