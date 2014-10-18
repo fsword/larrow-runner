@@ -8,7 +8,11 @@ You can save it as .larrow.yml on the project root folder.
       EOF
       def dump url
         vcs = Vcs.detect url
-        configuration = vcs.configuration false
+        configuration = Manifest.configuration(
+          vcs,
+          ignore_base_scripts: true,
+          ignore_larrow: true
+        )
         puts configuration.dump
       end
       

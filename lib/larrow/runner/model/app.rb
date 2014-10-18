@@ -5,7 +5,7 @@ module Larrow::Runner
       attr_accessor :vcs, :node, :configuration
       def initialize vcs, attributes={}
         self.vcs = vcs
-        self.configuration = vcs.configuration
+        self.configuration = Manifest.configuration vcs
         self.assign attributes unless attributes.empty?
       end
 
