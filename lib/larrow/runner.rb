@@ -1,4 +1,5 @@
 require 'active_support/core_ext/hash'
+require 'active_support/core_ext/string'
 
 require "larrow/runner/version"
 require 'larrow/runner/logger'
