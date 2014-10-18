@@ -45,6 +45,11 @@ module Larrow::Runner
 
     def handle_exception
       yield
+    rescue InvalidConfigFile => e
+      data = eval(e.message)
+      url = "https://github.com/fsword/larrow-runner/wiki/#{data[:wiki]}"
+      RunLogger.err "invalid config file: #{data[:file]}"
+      RunLogger.level(1).err "see: #{url}"
     rescue => e
       RunOption[:keep] = true if e.is_a?(ExecutionError)
       if e.is_a?(ExecutionError) && !debug?
@@ -88,7 +93,7 @@ module Larrow::Runner
 
     def self.resource
       resource_iterator do |clazz, array|
-        RunLogger.detail clazz.name.split("::").last
+        RunLogger.info clazz.name.split("::").last
         clazz.show array, 1
       end
     end
@@ -101,14 +106,16 @@ module Larrow::Runner
     end
 
     def self.resource_iterator
-      resource = YAML.load(File.read '.larrow.resource') rescue nil
-      return if resource.nil?
+      RunLogger.title "load resource from #{ResourcePath}"
+      resource = YAML.load(File.read ResourcePath) rescue {}
+      
       resource.each_pair do |k,array|
         case k
         when :nodes
           yield Model::Node, array
         end
       end
+      RunLogger.detail "no resource on the file" if resource.empty?
     end
   end
 end

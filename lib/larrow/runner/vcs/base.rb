@@ -1,17 +1,19 @@
-module Larrow::Runner::Vcs
-  class Base
-    attr_accessor :larrow_file
-    include Larrow::Runner
-    def configuration merge=true
-      configuration = Manifest.configuration(self)
-      if merge
-        Manifest.add_base_scripts configuration,self
-      end
-      configuration
-    end
+module Larrow::Runner
+  module Vcs
+    class Base
+      attr_accessor :larrow_file
 
-    def formatted_url
-      raise 'not implement yet'
+      def get filename
+        raise 'not implement yet'
+      end
+
+      def update_source node, target_dir
+        raise 'not implement yet'
+      end
+
+      def formatted_url
+        raise 'not implement yet'
+      end
     end
   end
 end

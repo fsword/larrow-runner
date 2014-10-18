@@ -19,10 +19,10 @@ module Larrow
         def create image_id:nil,count:1
           RunLogger.level(1).detail "assign node"
           instances = Instance.create(image_id: image_id||'trustysrvx64c',
-                                                 count:count,
-                                                 login_mode:'keypair',
-                                                 keypair_id: @keypair_id
-                                                )
+                                      count:count,
+                                      login_mode:'keypair',
+                                      keypair_id: @keypair_id
+                                     )
 
           eips = Eip.create(count:count)
           
@@ -42,8 +42,14 @@ module Larrow
           Image.list(:self, ids: [image_id]).size == 1
         end
 
+        # concurrent destroy(force)
+        def destroy *args
+          args.map(&:destroy).map(&:force)
+        end
+
         def check_available
           KeyPair.list
+          self
         rescue
           Qingcloud.remove_connection
           raise $!

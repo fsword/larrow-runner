@@ -7,7 +7,7 @@ module Larrow::Runner
   # logger.level(3).title 'hello'
   # logger.level(3).detail 'hello'
   class Logger
-    def initialize logger, level:nil, color:'magenta'
+    def initialize logger, level:nil, color:'green'
       @inner_logger = if logger.is_a? ::Logger
                         logger
                       else
@@ -44,7 +44,7 @@ module Larrow::Runner
     end
 
     def detail msg
-      color('green').info msg
+      color('magenta').info msg
     end
 
     def err msg

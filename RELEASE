@@ -1,0 +1,7 @@
+2014.10.19. version 0.0.2
+=========================
+
+* hotfix: undefined method `address` for Node
+* remove some third party libs
+* check cloud login before execute
+* some changes for user convenience

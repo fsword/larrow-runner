@@ -13,11 +13,22 @@ module Larrow
 
       extend self
 
-      def configuration source_accessor
-        [ Larrow, Travis, Blank ].each do |clazz|
-          configuration = clazz.new(source_accessor).load
-          return configuration if configuration
+      # options:
+      #   :ignore_larrow : do not try to use larrow adapter
+      #   :ignore_base_scripts : do not merge base scripts
+      def configuration source_accessor, options={}
+        adapters = [Travis, Blank]
+        adapters.unshift Larrow unless options[:ignore_larrow]
+
+        configuration = adapters.each do |clazz|
+          c = clazz.new(source_accessor).load
+          break c if c
         end
+      
+        unless options[:ignore_base_scripts]
+          add_base_scripts(configuration, source_accessor)
+        end
+        configuration
       end
 
       def add_base_scripts configuration,source_accessor

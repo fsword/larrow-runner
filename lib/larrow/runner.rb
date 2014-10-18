@@ -1,5 +1,5 @@
-require 'active_support/deprecation'
 require 'active_support/core_ext/hash'
+require 'active_support/core_ext/string'
 
 require "larrow/runner/version"
 require 'larrow/runner/logger'
@@ -18,8 +18,8 @@ module Larrow
                 end
     # global options
     RunOption = {}.with_indifferent_access
-    # cloud wrapper
-    Cloud = Session.load_cloud
+    # default resource file path
+    ResourcePath = '.larrow.resource'
   end
 end
 
