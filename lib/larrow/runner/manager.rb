@@ -77,7 +77,7 @@ module Larrow::Runner
 
     def store_resource
       resource = app.dump
-      File.write '.larrow.resource', YAML.dump(resource)
+      File.write ResourcePath, YAML.dump(resource)
       RunLogger.title 'store resource'
     end
 
