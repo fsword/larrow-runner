@@ -102,6 +102,7 @@ module Larrow::Runner
       resource_iterator do |clazz, array|
         clazz.cleanup array
       end
+      File.delete ResourcePath rescue nil
       RunLogger.title 'resource cleaned'
     end
 
