@@ -14,7 +14,7 @@ module Larrow::Runner
         @executor = Executor.new host, user, nil, nil
       end
 
-      def execute command, base_dir:nil
+      def execute command, base_dir:nil,verbose:nil
         block = if block_given?
                   -> (data) { yield data }
                 else
@@ -24,7 +24,7 @@ module Larrow::Runner
                     end
                   }
                 end
-        @executor.execute command, base_dir: base_dir, &block
+        @executor.execute command, base_dir: base_dir, verbose:verbose, &block
       end
 
       def stop

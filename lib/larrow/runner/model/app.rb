@@ -16,12 +16,13 @@ module Larrow::Runner
       end
 
       def action group
+        verbose = RunOption.key?(:debug) ? true : nil
         configuration.steps_for(group) do |a_step|
           RunLogger.title "[#{a_step.title}]"
           begin_at = Time.new
-          a_step.run_on node
+          a_step.run_on node, verbose: verbose
           during = sprintf('%.2f',Time.new - begin_at)
-          RunLogger.level(1).detail "#{a_step.title} complete (#{during}s)"
+          RunLogger.level(1).info "#{a_step.title} complete (#{during}s)"
         end
       end
 

@@ -15,13 +15,13 @@ module Larrow
           @dlogger = RunLogger #::Logger.new "#{ip}_cmd.log"
         end
 
-        def execute cmd, base_dir:nil
+        def execute cmd, base_dir:nil,verbose:nil
           connection.open_channel do |ch|
             RunLogger.level(1).detail "# #{cmd}"
             cmd = "cd #{base_dir}; #{cmd}" unless base_dir.nil?
             errmsg = ''
             ch.exec cmd do |ch,success|
-              if RunOption.key? :debug
+              if verbose
                 ch.on_data{ |c, data| yield data }
                 ch.on_extended_data{ |c, type, data| yield data }
               else
