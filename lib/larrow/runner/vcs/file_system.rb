@@ -26,8 +26,9 @@ module Larrow::Runner
 
       def update_source node, target_dir
         command = rsync_command node.user, node.host,target_dir
+        invoke "ssh #{ssh_options} root@#{node.host} date"
         invoke command
-        invoke "ssh-keygen -R #{node.host} 2>&1"
+        invoke "ssh-keygen -R #{node.host}"
       end
 
       def rsync_command user, host, target_dir
@@ -40,19 +41,30 @@ module Larrow::Runner
           unshift('.git').                   # .git itself is ignored
           map{|s| "--exclude '#{s}'" }       # build rsync exclude arguments
 
-        ssh_options = "-e 'ssh -o StrictHostKeyChecking=no'"
-
-        rsync_options = "-az #{ssh_options} #{excludes.join ' '}"
+        rsync_options = "-az -e 'ssh #{ssh_options}' #{excludes.join ' '}"
         rsync_options += ' -v' if RunOption.key? :debug
 
-        "rsync #{rsync_options} #{project_folder}/ '#{ssh_path}' 2>&1"
+        "rsync #{rsync_options} #{project_folder}/ '#{ssh_path}'"
       end
+      
       def invoke command
-        `#{command}`.split(/\r?\n/).each do |msg|
-          RunLogger.level(1).info msg
+        RunLogger.level(1).info command
+        time = Time.new
+        `#{command} 2>&1`.split(/\r?\n/).each do |msg|
+          RunLogger.level(2).detail msg
         end
+        RunLogger.level(1).detail "invoke time: #{Time.new - time}"
       end
 
+      def ssh_options
+        {
+          'GSSAPIAuthentication'  => 'no',
+          'StrictHostKeyChecking' => 'no',
+          'LogLevel'              => 'ERROR'
+        }.map do |k,v|
+          "-o #{k}=#{v}" 
+        end.join(' ')
+      end
     end
   end
 end
