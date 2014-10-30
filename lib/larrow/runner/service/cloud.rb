@@ -30,8 +30,6 @@ module Larrow
             RunLogger.level(1).detail "bind ip: #{eips[i].address}"
             eips[i] = eips[i].associate instances[i].id
             [ instances[i], eips[i] ]
-          end.tap do |list|
-            list.each{|instance,eip| ping eip.address}
           end
         end
 
@@ -57,13 +55,6 @@ module Larrow
           raise $!
         end
 
-        def ping addr, port=22
-          10.times do
-            return true if system("ping #{addr} -c 1 -W 2 2>&1 >/dev/null")
-            RunLogger.level(1).detail "check available: #{addr}"
-          end
-          return false
-        end
       end
     end
   end
