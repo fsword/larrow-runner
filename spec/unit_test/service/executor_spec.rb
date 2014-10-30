@@ -1,19 +1,16 @@
-require_relative '../spec_helper.rb'
+require_relative '../../spec_helper.rb'
 module Larrow::Runner::Service
   describe Executor do
     subject{ Executor.new 'localhost', `whoami`.chomp, 22, nil }
-    before do 
-      Larrow::Runner::RunOption[:debug] = nil
-    end
     it 'normal command run'do
       outputs = ''
-      subject.execute('echo aaa'){|data| outputs << data}
+      subject.execute('echo aaa',verbose:true){|data| outputs << data}
       expect(outputs).to eq "aaa\n"
     end
 
     it 'command with base dir' do
       outputs = ''
-      subject.execute('pwd', base_dir: '/opt') do |data|
+      subject.execute('pwd', base_dir: '/opt',verbose:true) do |data|
         outputs << data
       end
       expect(outputs).to eq "/opt\n"
