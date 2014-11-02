@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "faraday", '~> 0.9'
  
-  spec.add_runtime_dependency 'larrow-qingcloud', '~> 0'     
+  spec.add_runtime_dependency 'larrow-qingcloud', '~> 0.0', '>= 0.0.2'
   spec.add_runtime_dependency 'promising', '~> 0.3'
 
 end
