@@ -1,3 +1,12 @@
+2014.11.02. version 0.0.3
+=========================
+
+* clean dependency: remove `active_support`
+* open verbose mode on tests
+* delete resource file when cleanup
+* ensure node start( use `nmap` to detect)
+* use larrow-qingcloud v0.0.2
+
 2014.10.19. version 0.0.2
 =========================
 
