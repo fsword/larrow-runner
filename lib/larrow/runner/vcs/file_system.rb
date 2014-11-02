@@ -26,9 +26,8 @@ module Larrow::Runner
 
       def update_source node, target_dir
         command = rsync_command node.user, node.host,target_dir
-        invoke "ssh #{ssh_options} root@#{node.host} date"
         invoke command
-        invoke "ssh-keygen -R #{node.host}"
+        `ssh-keygen -R #{node.host} 2>&1 >/dev/null`
       end
 
       def rsync_command user, host, target_dir
