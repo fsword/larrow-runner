@@ -1,4 +1,4 @@
-require_relative '../spec_helper.rb'
+require_relative '../../spec_helper.rb'
 
 module Larrow::Runner::Manifest
   describe Travis do
@@ -9,7 +9,7 @@ module Larrow::Runner::Manifest
       end
 
       def get _filename
-        path = File.expand_path "../../fixtures/#{filename}", __FILE__
+        path = File.expand_path "../../../fixtures/#{filename}", __FILE__
         File.read(path)
       end
 

@@ -25,7 +25,7 @@ module Larrow::Runner
   
       def build_language
         return if data[:language].nil?
-        clazz = eval data[:language].camelize
+        clazz = eval data[:language].capitalize
         clazz.fulfill(data,configuration)
       end
     end

@@ -30,6 +30,8 @@ module Larrow
             RunLogger.level(1).detail "bind ip: #{eips[i].address}"
             eips[i] = eips[i].associate instances[i].id
             [ instances[i], eips[i] ]
+          end.tap do |list|
+            list.each{|instance,eip| ping eip.address,30}
           end
         end
 
@@ -54,6 +56,17 @@ module Larrow
           Qingcloud.remove_connection
           raise $!
         end
+        
+        def ping host, time, port=22
+          Timeout::timeout(time) do
+            loop do
+              if system("nmap #{host} -p #{port} -Pn | grep -q open")
+                return true
+              end
+            end
+          end
+        end
+
       end
     end
   end

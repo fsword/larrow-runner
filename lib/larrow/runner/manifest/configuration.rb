@@ -81,9 +81,12 @@ module Larrow::Runner
         self.title = title
       end
   
-      def run_on node
+      def run_on node, verbose:nil
+        verbose = title.to_s.end_with?('test') if verbose.nil?
         scripts.each do |script|
-          node.execute script.actual_command, base_dir: script.base_dir
+          node.execute(script.actual_command, 
+                       base_dir: script.base_dir,
+                       verbose: verbose)
         end
       end
     end
@@ -99,7 +102,7 @@ module Larrow::Runner
         self.block = block
       end
       
-      def run_on node
+      def run_on node, *args
         block.call node
       end
     end

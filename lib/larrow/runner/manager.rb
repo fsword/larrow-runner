@@ -77,7 +77,7 @@ module Larrow::Runner
 
     def store_resource
       resource = app.dump
-      File.write '.larrow.resource', YAML.dump(resource)
+      File.write ResourcePath, YAML.dump(resource)
       RunLogger.title 'store resource'
     end
 
@@ -102,6 +102,7 @@ module Larrow::Runner
       resource_iterator do |clazz, array|
         clazz.cleanup array
       end
+      File.delete ResourcePath rescue nil
       RunLogger.title 'resource cleaned'
     end
 
